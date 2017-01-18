@@ -116,7 +116,7 @@ class AmityApp(cmd.Cmd):
         Usage: load_people <filename>
         """
         self.amity.load_people(arg["<filename>"])
-        print("File loaded.")
+
 
     @app_exec
     def do_reallocate_person(self, arg):
