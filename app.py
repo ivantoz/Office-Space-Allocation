@@ -5,7 +5,7 @@ This system makes it easy to manage rooms and people at Amity.
 Usage:
     create_room <room_type> <room_name> ...
     add_person <person_name> <job_type> [wants_accommodation]
-    reallocate_person <person_identifier><new_room>
+    reallocate_person <person_identifier> <new_room>
     load_people <filename>
     print_room <room_name>
     print_allocations [--o=filename]
@@ -25,7 +25,7 @@ from docopt import docopt, DocoptExit
 from pyfiglet import figlet_format
 from termcolor import cprint
 
-from app.model import Amity
+from app.amity import Amity
 
 
 def app_exec(func):
@@ -61,13 +61,8 @@ class AmityApp(cmd.Cmd):
         Usage: create_room <room_type> <room_name> ...
         """
         room_type = arg["<room_type>"]
-        if len(arg["<room_name>"]) > 1:
-            for i in arg["<room_name>"]:
-                room_name = i
-                self.amity.create_room(room_type, room_name)
-        else:
-            room_name = arg["<room_name>"]
-            self.amity.create_room(room_type, room_name)
+        room_name = arg["<room_name>"]
+        self.amity.create_room(room_type, room_name)
 
     @app_exec
     def do_add_person(self, arg):
@@ -75,13 +70,13 @@ class AmityApp(cmd.Cmd):
         Adds a person to the system and allocates the person to a random room. wants_accommodation here is an optional argument which can be either Y or N
         Usage: add_person <person_name> <job_type> [wants_accommodation]
         """
-        person_description = arg["<job_type>"]
+        job_type = arg["<job_type>"]
+        person_name = arg["<person_name>"]
         wants_accommodation = arg["wants_accommodation"]
         if wants_accommodation is None:
             wants_accommodation = "N"
 
-        person_name = arg["<person_name>"]
-        self.amity.add_person(person_name, person_description, wants_accommodation)
+        self.amity.add_person(person_name, job_type, wants_accomodation=wants_accommodation)
 
     @app_exec
     def do_print_room(self, arg):
