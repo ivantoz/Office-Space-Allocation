@@ -166,6 +166,14 @@ class AmityTestCase(unittest.TestCase):
         expected_response = "Room with name {} does not exist".format(new_room)
         self.assertEqual(unregistered_room_allocation, expected_response)
 
+    def test_reallocation_of_unregistered_person(self):
+        self.amity.create_room("Office", "Hogwarts")
+        self.amity.add_person("Bryan", "staff")
+        self.amity.create_room("office", "Valhalla")
+        person_name = "Bryankip"
+        self.assertEqual((self.amity.reallocate_person(person_name, "Valhalla")),
+                         ("{} does not exist".format(person_name)))
+
 
 
 
