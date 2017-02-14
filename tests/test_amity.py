@@ -186,6 +186,15 @@ class AmityTestCase(unittest.TestCase):
         self.amity.create_room("office", "hogwarts")
         self.assertEqual(self.amity.load_people('datax.txt'), "Please provide valid a text file name !")
 
+    def test_load_from_empty_file(self):
+        self.amity.create_room('office', 'oculus')
+        filename = "empty.txt"
+        file = open(filename, "a")
+        file.write('')
+        self.assertTrue(os.path.isfile(filename))
+        self.assertEqual(self.amity.load_people(filename), "The file is empty")
+        os.remove(filename)
+
 
 
 
