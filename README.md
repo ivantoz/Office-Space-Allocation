@@ -1,6 +1,7 @@
 # Amity Room Allocation
 
 [![Build Status](https://travis-ci.org/ivantoz/Office-Space-Allocation.svg?branch=dev)](https://travis-ci.org/ivantoz/Office-Space-Allocation)
+[![Coverage Status](https://coveralls.io/repos/github/ivantoz/Office-Space-Allocation/badge.svg?branch=master)](https://coveralls.io/github/ivantoz/Office-Space-Allocation?branch=master)
 
 Amity is a room allocation and management system for one of andela's facilities called 'Amity'
 
