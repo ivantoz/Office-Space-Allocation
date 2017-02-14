@@ -21,6 +21,11 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(self.amity.add_person("cn14", "Chris", "Rock", "staff"),
                          "sorry, this user already exists.please enter valid employee number")
 
+    def test_add_person_no_office_created(self):
+        """Test adding person with no room created"""
+        self.assertEqual(self.amity.add_person("cn05", "Sam", "Wanjala", "Fellow"),
+                         "sorry, all rooms are full at this time.")
+
 
 
 if __name__ == '__main__':
