@@ -68,15 +68,17 @@ class AmityApp(cmd.Cmd):
     def do_add_person(self, arg):
         """
         Adds a person to the system and allocates the person to a random room. wants_accommodation here is an optional argument which can be either Y or N
-        Usage: add_person <person_name> <job_type> [wants_accommodation]
+        Usage: add_person <employee_number> <first_name> <last_name> <job_type> [wants_accommodation]
         """
+        employee_no = arg["<employee_number>"]
         job_type = arg["<job_type>"]
-        person_name = arg["<person_name>"]
+        first_name = arg["<first_name>"]
+        last_name = arg["<last_name>"]
         wants_accommodation = arg["wants_accommodation"]
         if wants_accommodation is None:
             wants_accommodation = "N"
 
-        self.amity.add_person(person_name, job_type, wants_accomodation=wants_accommodation)
+        self.amity.add_person(employee_no, first_name, last_name, job_type, wants_accomodation=wants_accommodation)
 
     @app_exec
     def do_print_room(self, arg):
