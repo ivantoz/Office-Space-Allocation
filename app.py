@@ -50,7 +50,7 @@ def app_exec(func):
 
 class AmityApp(cmd.Cmd):
     intro = cprint(figlet_format("Amity", font="cosmike"), "green")
-    prompt = "Amity --> "
+    prompt = "Amity$:"
 
     amity = Amity()
 
