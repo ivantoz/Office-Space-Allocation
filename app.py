@@ -86,7 +86,7 @@ class AmityApp(cmd.Cmd):
         Prints  the names of all the people in room_name on the screen.
         Usage: print_room <room_name>
         """
-        self.amity.print_room(arg["<room_name>"])
+        print(self.amity.print_room(arg["<room_name>"]))
 
     @app_exec
     def do_print_allocations(self, arg):
