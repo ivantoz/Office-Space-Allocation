@@ -182,6 +182,10 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(len(self.amity.fellows_list), 4)
         self.assertEqual(len(self.amity.staff_list), 3)
 
+    def test_load_from_non_existent_filename(self):
+        self.amity.create_room("office", "hogwarts")
+        self.assertEqual(self.amity.load_people('datax.txt'), "Please provide valid a text file name !")
+
 
 
 
