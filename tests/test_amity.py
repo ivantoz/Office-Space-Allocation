@@ -84,6 +84,13 @@ class AmityTestCase(unittest.TestCase):
         room_count_after = len(self.amity.all_rooms)
         self.assertEqual(room_count_after, (room_count_before + 1))
 
+    def test_create_room_return_error_on_duplicate_names(self):
+        name = "Hogwarts"
+        self.amity.create_room("office", name)
+        msg = self.amity.create_room("office", name)
+        expected_msg = "sorry, {} room already exists!please choose another name".format(name)
+        self.assertEqual(msg, expected_msg)
+
 
 
 
