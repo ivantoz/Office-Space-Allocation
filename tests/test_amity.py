@@ -136,6 +136,15 @@ class AmityTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile('test.db'))
         os.remove('test.db')
 
+    def test_reallocate_person_to_fully_occupied_room(self):
+        people_list = {"Sam": "Fellow", "Gideon": "Fellow", "Charles": "Fellow", "Rogers": "Staff", "Mahad": "Fellow",
+                       "Percila": "Staff"}
+        self.amity.create_room("Office", "Kenya")
+        for name in people_list:
+            self.amity.add_person(name, people_list[name])
+        self.amity.add_person("Batian", "Fellow")
+        self.assertEqual(self.amity.reallocate_person("Batian7", "Kenya"), "Sorry the office is fully occupied")
+
 
 
 
