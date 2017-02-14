@@ -98,6 +98,14 @@ class AmityTestCase(unittest.TestCase):
         self.amity.reallocate_person("Bryan", "Valhalla")
         self.assertIn("Bryan", self.amity.office_allocations.values())
 
+    def test_person_is_removed_from_old_room(self):
+        self.amity.create_room("office", "Oculus")
+        self.amity.add_person("CN01", "Gideon", "Gitau", "staff")
+        self.assertIn("CN01", self.amity.office_allocations["Oculus"])
+        self.amity.create_room("office", "Valhalla")
+        self.amity.reallocate_person("CN01", "Valhalla")
+        self.assertNotIn("CN01", self.amity.office_allocations["Oculus"])
+
 
 
 
