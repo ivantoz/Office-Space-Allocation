@@ -1,10 +1,9 @@
-
 """
 Amity Allocator
 This system makes it easy to manage rooms and people at Amity.
 Usage:
     create_room <room_type> <room_name> ...
-    add_person <person_name> <job_type> [wants_accommodation]
+    add_person <employee_number> <first_name> <last_name> <job_type> [wants_accommodation]
     reallocate_person <person_identifier> <new_room>
     load_people <filename>
     print_room <room_name>
