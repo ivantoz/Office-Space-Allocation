@@ -158,6 +158,14 @@ class AmityTestCase(unittest.TestCase):
         already_present = self.amity.reallocate_person("Percila", 'Camelot')
         self.assertEqual(already_present, "The Person is already allocated in the requested room")
 
+    def test_reallocate_to_non_existent_room(self):
+        self.amity.create_room("office", "Krypton")
+        self.amity.add_person("Kip", "Fellow")
+        new_room = "Valhalla"
+        unregistered_room_allocation = self.amity.reallocate_person("Kip", new_room)
+        expected_response = "Room with name {} does not exist".format(new_room)
+        self.assertEqual(unregistered_room_allocation, expected_response)
+
 
 
 
