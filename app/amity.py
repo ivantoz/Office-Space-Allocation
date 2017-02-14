@@ -150,7 +150,7 @@ class Amity(object):
 
                     else:
                         person = employee_number.upper()
-                        self.amity_unallocated.append(person)
+                        self.lspace_unallocated.append(person)
                         kudosmsg = "sorry, all living space rooms are full at this time."
                         print(kudosmsg)
                 return kudosmsg
