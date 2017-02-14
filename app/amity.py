@@ -100,24 +100,23 @@ class Amity(object):
             return msg
         else:
             if job_type.upper() == "STAFF":
+
                 staff = Staff(employee_number, first_name, last_name, job_type, wants_accomodation)
                 self.all_people.append(staff)
                 self.staff_list.append(staff)
-                print("{} successfully added to system".format(first_name))
-
-                if wants_accomodation == "Y":
-                    return "Staff members Cannot be allocated living space"
 
                 allocated_office = self.generate_room("OFFICE")
                 if allocated_office is not None:
-                    self.office_allocations[allocated_office.room_name].append(employee_number)
+                    self.office_allocations[allocated_office.room_name].append(employee_number.upper())
                     allocated_office.occupants += 1
                     msg1 = "congratulations {}, you have been assigned to {} office"\
                         .format(first_name, allocated_office.room_name.upper())
                     print(msg1)
+                    if wants_accomodation == "Y":
+                        msg1 += " However, Staff members Cannot be allocated living space"
                     return msg1
                 else:
-                    self.amity_unallocated.append(first_name.upper)
+                    self.office_unallocated.append(employee_number.upper())
                     sorrymsg = "sorry, all rooms are full at this time."
                     print(sorrymsg)
                     return sorrymsg
