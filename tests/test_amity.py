@@ -131,6 +131,11 @@ class AmityTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile('test_print.txt'))
         os.remove('test_print.txt')
 
+    def test_save_state(self):
+        self.amity.save_state('test.db')
+        self.assertTrue(os.path.isfile('test.db'))
+        os.remove('test.db')
+
 
 
 
