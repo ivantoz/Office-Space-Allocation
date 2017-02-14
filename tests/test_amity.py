@@ -120,6 +120,17 @@ class AmityTestCase(unittest.TestCase):
         name = 'oculus'
         self.assertEqual(self.amity.print_room(name), "The room with the name {} does not exist.".format(name))
 
+    def test_prints_allocations_with_filename(self):
+        self.amity.create_room('office', 'valhalla')
+        self.amity.add_person("cn05", "Roger", "Taracha", "Fellow")
+        self.amity.add_person("cn04", "Mahad", "Walusimbi", "Fellow")
+        self.amity.add_person("cn03", "Charles", "Muthini", "Fellow")
+        self.amity.add_person("cn02", "Sam", "Wanjala", "Fellow")
+        self.amity.add_person("cn01", "Gideon", "Gitau", "Fellow")
+        self.amity.print_allocations('test_print')
+        self.assertTrue(os.path.isfile('test_print.txt'))
+        os.remove('test_print.txt')
+
 
 
 
