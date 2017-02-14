@@ -13,6 +13,14 @@ class AmityTestCase(unittest.TestCase):
         self.amity.add_person("cn03", "Ivan", "Kipyegon", "fellow", "y")
         self.assertEqual(len(self.amity.all_people), person_count_before + 1)
 
+    def test_add_person_duplicate_employee_number(self):
+        """Test it does not add person more than once"""
+        self.amity.add_person("cn14", "Chris", "Rock", "staff")
+        people_names = [people.employee_number for people in self.amity.all_people]
+        self.assertIn("cn14", people_names)
+        self.assertEqual(self.amity.add_person("cn14", "Chris", "Rock", "staff"),
+                         "sorry, this user already exists.please enter valid employee number")
+
 
 
 if __name__ == '__main__':
