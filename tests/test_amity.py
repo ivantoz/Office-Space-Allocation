@@ -174,6 +174,14 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual((self.amity.reallocate_person(person_name, "Valhalla")),
                          ("{} does not exist".format(person_name)))
 
+    def test_load_from_file(self):
+        self.amity.create_room("lspace", "Shell", "wing")
+        self.amity.create_room("office", "Valhalla", "Oculus")
+        path = os.path.realpath("data.txt")
+        self.amity.load_people(path)
+        self.assertEqual(len(self.amity.fellows_list), 4)
+        self.assertEqual(len(self.amity.staff_list), 3)
+
 
 
 
