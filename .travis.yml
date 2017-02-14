@@ -12,7 +12,7 @@ install:
 # command to run tests
 script:
   - pytest tests/test_amity.py
-  - py.test --cov=lib tests/*
+#  - py.test --cov=lib tests/*
 # run coveralls after success
 after_success: coveralls
 cache: pip
