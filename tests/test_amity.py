@@ -56,6 +56,11 @@ class AmityTestCase(unittest.TestCase):
                                                            fellow_list[empno][2], wants_accomodation="Y")
         self.assertEqual(assigning_living_space, "sorry, all living space rooms are full at this time.")
 
+    def test_add_person_does_not_allocate_staff_living_space(self):
+        self.amity.create_room("lspace", "shell")
+        self.assertEqual(self.amity.add_person("cn01", "Ivan", "Kip", "STAFF", wants_accomodation="Y"),
+                         "Staff members Cannot be allocated living space")
+
 
 
 if __name__ == '__main__':
