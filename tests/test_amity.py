@@ -61,6 +61,12 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(self.amity.add_person("cn01", "Ivan", "Kip", "STAFF", wants_accomodation="Y"),
                          "Staff members Cannot be allocated living space")
 
+    def test_create_multiple_rooms(self):
+        room_count_before = len(self.amity.all_rooms)
+        self.amity.create_room("Office", "Hogwarts", "Oculus", "Valhalla", "Krypton")
+        self.assertEqual(len(self.amity.all_rooms), room_count_before + 4)
+
+
 
 
 if __name__ == '__main__':
