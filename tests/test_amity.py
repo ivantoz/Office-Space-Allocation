@@ -78,6 +78,13 @@ class AmityTestCase(unittest.TestCase):
         for room in self.amity.lspace_allocations:
             self.assertIn("CN01", self.amity.lspace_allocations[room])
 
+    def test_create_room_added_to_system(self):
+        room_count_before = len(self.amity.all_rooms)
+        self.amity.create_room("Office", "Valhalla")
+        room_count_after = len(self.amity.all_rooms)
+        self.assertEqual(room_count_after, (room_count_before + 1))
+
+
 
 
 
