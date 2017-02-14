@@ -77,7 +77,7 @@ class Amity(object):
             return random.choice(available)
         return None
 
-    def add_person(self, person_name, job_type, wants_accomodation="N"):
+    def add_person(self, employee_number, first_name, last_name, job_type, wants_accomodation="N"):
         """
         Adds a person to the system and allocates a random room
 
@@ -85,93 +85,98 @@ class Amity(object):
 
         """
 
-        all_people_names = [person.person_name for person in self.all_people]
-        if person_name in all_people_names:
-            msg = "sorry, this user already exists.please choose another name"
+        all_employees_number = [person.employee_number for person in self.all_people]
+        print(self.all_people)
+        if employee_number in all_employees_number:
+            msg = "sorry, this user already exists.please enter valid employee number"
             print(msg)
             return msg
         else:
             if job_type.upper() == "STAFF":
-                staff = Staff(person_name, job_type, wants_accomodation)
+                staff = Staff(employee_number, first_name, last_name, job_type, wants_accomodation)
                 self.all_people.append(staff)
                 self.staff_list.append(staff)
-                print("{} successfully added to system".format(person_name))
+                print("{} successfully added to system".format(first_name))
+
+                if wants_accomodation == "Y":
+                    return "Staff members Cannot be allocated living space"
 
                 allocated_office = self.generate_room("OFFICE")
                 if allocated_office is not None:
-                    self.office_allocations[allocated_office.room_name].append(person_name)
+                    self.office_allocations[allocated_office.room_name].append(employee_number)
                     allocated_office.occupants += 1
                     msg1 = "congratulations {}, you have been assigned to {} office"\
-                        .format(person_name, allocated_office.room_name.upper())
+                        .format(first_name, allocated_office.room_name.upper())
                     print(msg1)
                     return msg1
                 else:
-                    self.amity_unallocated.append(person_name.upper)
+                    self.amity_unallocated.append(first_name.upper)
                     sorrymsg = "sorry, all rooms are full at this time."
                     print(sorrymsg)
                     return sorrymsg
+
             elif job_type.upper() == "FELLOW":
-                fellow = Fellow(person_name, job_type, wants_accomodation)
+                fellow = Fellow(employee_number, first_name, last_name, job_type, wants_accomodation)
                 self.all_people.append(fellow)
                 self.fellows_list.append(fellow)
                 allocated_office = self.generate_room("OFFICE")
                 kudosmsg = ''
                 if allocated_office is not None:
-                    self.office_allocations[allocated_office.room_name].append(person_name.upper())
+                    self.office_allocations[allocated_office.room_name].append(employee_number.upper())
                     allocated_office.occupants += 1
                     kudosmsg = "congratulations {}, you have been assigned to {} office"\
-                        .format(person_name, allocated_office.room_name.upper())
+                        .format(first_name, allocated_office.room_name.upper())
                     print(kudosmsg)
 
 
                 else:
-                    self.amity_unallocated.append(person_name.upper() + "" + job_type)
+                    self.amity_unallocated.append(employee_number.upper() + "" + job_type)
                     kudosmsg = "sorry, all rooms are full at this time."
                     print(kudosmsg)
 
                 if wants_accomodation == "Y":
                     allocated_lspace = self.generate_room("LSPACE")
                     if allocated_lspace is not None:
-                        self.lspace_allocations[allocated_lspace.room_name].append(person_name.upper())
+                        self.lspace_allocations[allocated_lspace.room_name].append(employee_number.upper())
                         allocated_lspace.occupants += 1
                         kudosmsg = "congratulations {}, you have been assigned to {} living space"\
-                            .format(person_name, allocated_lspace.room_name)
+                            .format(first_name, allocated_lspace.room_name)
                         print(kudosmsg)
 
                     else:
-                        person = person_name.upper()
+                        person = employee_number.upper()
                         self.amity_unallocated.append(person)
-                        kudosmsg = "sorry, all rooms are full at this time."
+                        kudosmsg = "sorry, all living space rooms are full at this time."
                         print(kudosmsg)
                 return kudosmsg
 
-    def reallocate_person(self, person_name, new_room):
+    def reallocate_person(self, employee_number, new_room):
 
         """ Reallocate the person with person_identifier to new_room_name. """
-        all_people_names = [person.person_name for person in self.all_people]
-        for name in all_people_names:
-            if name == person_name:
-                if person_name in all_people_names:
+        all_people_names = [person.employee_number for person in self.all_people]
+        for empno in all_people_names:
+            if empno == employee_number:
+                if employee_number in all_people_names:
                     rtype = self.check_room_type(new_room)
-                    current_room = self.check_allocated_room(person_name, rtype)
+                    current_room = self.check_allocated_room(employee_number, rtype)
                     if rtype is None:
                         res = "Room with name {} does not exist".format(new_room)
                         print(res)
                         return res
                     elif rtype == 'LSPACE':
                         if current_room is not None:
-                            self.lspace_allocations[current_room].remove(person_name)
-                        self.lspace_allocations[new_room].append(person_name)
-                        print("{} has been moved to {}".format(person_name, new_room))
+                            self.lspace_allocations[current_room].remove(employee_number)
+                        self.lspace_allocations[new_room].append(employee_number)
+                        print("{} has been moved to {}".format(employee_number, new_room))
                         break
                     elif rtype == 'OFFICE':
                         if current_room is not None:
-                            self.office_allocations[current_room].remove(person_name)
-                        self.office_allocations[new_room].append(person_name)
-                        print("{} has been moved to {}".format(person_name, new_room))
+                            self.office_allocations[current_room].remove(employee_number)
+                        self.office_allocations[new_room].append(employee_number)
+                        print("{} has been moved to {}".format(employee_number, new_room))
                         break
                 else:
-                    return "{} does not exist".format(person_name)
+                    return "{} does not exist".format(employee_number)
 
     def check_room_type(self, name):
         """checks room allocated to a person"""
@@ -180,15 +185,15 @@ class Amity(object):
                 return room.room_type
         return None
 
-    def check_allocated_room(self, person_name, room_type):
+    def check_allocated_room(self, empno, room_type):
         if room_type == "LSPACE":
             for room in self.lspace_allocations:
-                if person_name in self.lspace_allocations[room]:
+                if empno in self.lspace_allocations[room]:
                     return room
         elif room_type == "OFFICE":
             for room in self.office_allocations:
 
-                if person_name in self.office_allocations[room]:
+                if empno in self.office_allocations[room]:
                     return room
         return None
 
@@ -207,14 +212,14 @@ class Amity(object):
                         person_data = line.split()
                         first_name = person_data[0]
                         last_name = person_data[1]
-                        full_name = first_name + " " + last_name
+                        empno = first_name + last_name
                         job_type = person_data[2]
                         try:
                             accomodation = person_data[3]
                         except Exception:
                             accomodation = 'N'
 
-                        self.add_person(full_name, job_type, accomodation)
+                        self.add_person(empno, first_name, last_name, job_type, accomodation)
 
                     return "File data added successfully"
 
@@ -222,15 +227,18 @@ class Amity(object):
             print("please provide a text file name")
 
     def print_allocations(self, filename=None):
-        """prints all allocations"""
+        """Prints a list of allocations onto the screen. Specifying the optional -o option here outputs the registered
+        allocations to a txt file"""
+
         print("-" * 30 + "\n" + "AMITY OFFICE ALLOCATIONS\n" + "-" * 30 + "\n")
-        for office, names in self.office_allocations.items():
+        for office, empnos in self.office_allocations.items():
             print(office.upper())
             print("-" * 30)
             print("\n")
-            for name in names:
-                print(name)
-                print("\n")
+            for empno in empnos:
+                firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == empno]
+                lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
+                print(firstname[0].upper(), lastname[0].upper(), end=', ')
 
                 if filename:
 
@@ -240,15 +248,31 @@ class Amity(object):
                     file.write(office)
                     file.write("\n")
                     file.write("-" * 30 + "\n")
-                    for name in self.office_allocations[office]:
-                        file.write(name.upper() + ", ")
+                    file.write(firstname[0].upper() + " " + lastname[0].upper() + ", ")
+                    file.write("\n")
+                    # for name in self.office_allocations[office]:
+                    #     file.write(.upper() + ", ")
                     file.write("\n" + "-" * 30 + "\n")
 
     def print_unallocated(self, filename=None):
-        pass
+        """Prints a list of unallocated people to the screen. Specifying the -o option here outputs the information to
+        the txt file provided"""
 
-    def print_room(self):
-        pass
+        print(self.amity_unallocated)
+
+        print("-" * 30 + "\n" + "AMITY UNALLOCATED\n" + "-" * 30 +"\n")
+        if len(self.amity_unallocated) != 0:
+            for person in self.amity_unallocated:
+                print(person)
+        else:
+            print("All people have been allocated rooms!")
+            if filename:
+                file = open(filename + ".txt", "a")
+                for person in self.amity_unallocated:
+                    file.write(person)
+
+    def print_room(self, room_name):
+
 
     def save_state(self, dbname="dbname"):
         pass
