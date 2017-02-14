@@ -102,22 +102,22 @@ class AmityTestCase(unittest.TestCase):
         expected_msg = "sorry, {} room already exists!please choose another name".format(name)
         self.assertEqual(msg, expected_msg)
 
-    def test_reallocate_person(self):
-        """Test amity can reallocate a person"""
-        self.amity.create_room("Office", "Hogwarts")
-        self.amity.add_person("Bryan", "staff")
-        self.amity.create_room("office", "Valhalla")
-        self.amity.reallocate_person("Bryan", "Valhalla")
-        self.assertIn("Bryan", self.amity.office_allocations.values())
+    # def test_reallocate_person(self):
+    #     """Test amity can reallocate a person"""
+    #     self.amity.create_room("Office", "Hogwarts")
+    #     self.amity.add_person("Bryan", "staff")
+    #     self.amity.create_room("office", "Valhalla")
+    #     self.amity.reallocate_person("Bryan", "Valhalla")
+    #     self.assertIn("Bryan", self.amity.office_allocations.values())
 
-    def test_person_is_removed_from_old_room(self):
-        """Test that a reallocated person is removed from old room"""
-        self.amity.create_room("office", "Oculus")
-        self.amity.add_person("CN01", "Gideon", "Gitau", "staff")
-        self.assertIn("CN01", self.amity.office_allocations["Oculus"])
-        self.amity.create_room("office", "Valhalla")
-        self.amity.reallocate_person("CN01", "Valhalla")
-        self.assertNotIn("CN01", self.amity.office_allocations["Oculus"])
+    # def test_person_is_removed_from_old_room(self):
+    #     """Test that a reallocated person is removed from old room"""
+    #     self.amity.create_room("office", "Oculus")
+    #     self.amity.add_person("CN01", "Gideon", "Gitau", "staff")
+    #     self.assertIn("CN01", self.amity.office_allocations["Oculus"])
+    #     self.amity.create_room("office", "Valhalla")
+    #     self.amity.reallocate_person("CN01", "Valhalla")
+    #     self.assertNotIn("CN01", self.amity.office_allocations["Oculus"])
 
     def test_prints_unallocated(self):
         """Test print unallocated people to text file"""
@@ -154,48 +154,48 @@ class AmityTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile('test.db'))
         os.remove('test.db')
 
-    def test_reallocate_person_to_fully_occupied_room(self):
-        """Test reallocating person to fully maximum number of occupants"""
-        people_list = {"Sam": "Fellow", "Gideon": "Fellow", "Charles": "Fellow", "Rogers": "Staff", "Mahad": "Fellow",
-                       "Percila": "Staff"}
-        self.amity.create_room("Office", "Kenya")
-        for name in people_list:
-            self.amity.add_person(name, people_list[name])
-        self.amity.add_person("Batian", "Fellow")
-        self.assertEqual(self.amity.reallocate_person("Batian7", "Kenya"), "Sorry the office is fully occupied")
+    # def test_reallocate_person_to_fully_occupied_room(self):
+    #     """Test reallocating person to fully maximum number of occupants"""
+    #     people_list = {"Sam": "Fellow", "Gideon": "Fellow", "Charles": "Fellow", "Rogers": "Staff", "Mahad": "Fellow",
+    #                    "Percila": "Staff"}
+    #     self.amity.create_room("Office", "Kenya")
+    #     for name in people_list:
+    #         self.amity.add_person(name, people_list[name])
+    #     self.amity.add_person("Batian", "Fellow")
+    #     self.assertEqual(self.amity.reallocate_person("Batian7", "Kenya"), "Sorry the office is fully occupied")
 
-    def test_reallocate_staff_to_living_space(self):
-        """test reallocating staff to a living space room"""
-        self.amity.create_room("Office", "Longonot")
-        self.amity.add_person("chelimo", "Staff")
-        self.amity.create_room("lspace", "Shell")
-        allocating_staff_living_space = self.amity.reallocate_person("chelimo", "Shell")
-        self.assertEqual(allocating_staff_living_space, "Sorry you cannot allocate staff living space")
+    # def test_reallocate_staff_to_living_space(self):
+    #     """test reallocating staff to a living space room"""
+    #     self.amity.create_room("Office", "Longonot")
+    #     self.amity.add_person("chelimo", "Staff")
+    #     self.amity.create_room("lspace", "Shell")
+    #     allocating_staff_living_space = self.amity.reallocate_person("chelimo", "Shell")
+    #     self.assertEqual(allocating_staff_living_space, "Sorry you cannot allocate staff living space")
 
-    def test_reallocate_person_same_room(self):
-        """Test reallocating person to same room"""
-        self.amity.create_room("office", "Camelot")
-        self.amity.add_person("Percila", "Staff")
-        already_present = self.amity.reallocate_person("Percila", 'Camelot')
-        self.assertEqual(already_present, "The Person is already allocated in the requested room")
+    # def test_reallocate_person_same_room(self):
+    #     """Test reallocating person to same room"""
+    #     self.amity.create_room("office", "Camelot")
+    #     self.amity.add_person("Percila", "Staff")
+    #     already_present = self.amity.reallocate_person("Percila", 'Camelot')
+    #     self.assertEqual(already_present, "The Person is already allocated in the requested room")
 
-    def test_reallocate_to_non_existent_room(self):
-        """Test reallocating person to non existen room"""
-        self.amity.create_room("office", "Krypton")
-        self.amity.add_person("Kip", "Fellow")
-        new_room = "Valhalla"
-        unregistered_room_allocation = self.amity.reallocate_person("Kip", new_room)
-        expected_response = "Room with name {} does not exist".format(new_room)
-        self.assertEqual(unregistered_room_allocation, expected_response)
+    # def test_reallocate_to_non_existent_room(self):
+    #     """Test reallocating person to non existen room"""
+    #     self.amity.create_room("office", "Krypton")
+    #     self.amity.add_person("Kip", "Fellow")
+    #     new_room = "Valhalla"
+    #     unregistered_room_allocation = self.amity.reallocate_person("Kip", new_room)
+    #     expected_response = "Room with name {} does not exist".format(new_room)
+    #     self.assertEqual(unregistered_room_allocation, expected_response)
 
-    def test_reallocation_of_unregistered_person(self):
-        """Test reallocating unregistered person"""
-        self.amity.create_room("Office", "Hogwarts")
-        self.amity.add_person("Bryan", "staff")
-        self.amity.create_room("office", "Valhalla")
-        person_name = "Bryankip"
-        self.assertEqual((self.amity.reallocate_person(person_name, "Valhalla")),
-                         ("{} does not exist".format(person_name)))
+    # def test_reallocation_of_unregistered_person(self):
+    #     """Test reallocating unregistered person"""
+    #     self.amity.create_room("Office", "Hogwarts")
+    #     self.amity.add_person("Bryan", "staff")
+    #     self.amity.create_room("office", "Valhalla")
+    #     person_name = "Bryankip"
+    #     self.assertEqual((self.amity.reallocate_person(person_name, "Valhalla")),
+    #                      ("{} does not exist".format(person_name)))
 
     def test_load_from_file(self):
         """Test adding people fro text file"""
