@@ -134,9 +134,8 @@ class Amity(object):
                         .format(first_name, allocated_office.room_name.upper())
                     print(kudosmsg)
 
-
                 else:
-                    self.amity_unallocated.append(employee_number.upper() + "" + job_type)
+                    self.office_unallocated.append(employee_number.upper())
                     kudosmsg = "sorry, all rooms are full at this time."
                     print(kudosmsg)
 
