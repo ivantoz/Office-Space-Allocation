@@ -29,6 +29,7 @@ from app.amity import Amity
 
 def app_exec(func):
     """ Decorator definition for the app."""
+
     def fn(self, arg):
         try:
             opt = docopt(fn.__doc__, arg)
