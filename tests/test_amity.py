@@ -116,6 +116,10 @@ class AmityTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile('test_print.txt'))
         os.remove('test_print.txt')
 
+    def test_print_room_with_non_existent_room_name(self):
+        name = 'oculus'
+        self.assertEqual(self.amity.print_room(name), "The room with the name {} does not exist.".format(name))
+
 
 
 
