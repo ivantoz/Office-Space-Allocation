@@ -27,10 +27,12 @@ class AmityTestCase(unittest.TestCase):
                          "sorry, all rooms are full at this time.")
 
     def test_add_person_no_livingspace_created(self):
+        """Testing adding person with no living space created"""
         self.assertEqual(self.amity.add_person("cn05", "Sam", "Wanjala", "Fellow", "Y"),
                          "sorry, all living space rooms are full at this time.")
 
-    def test_add_person_not_allow_more_than_capacity_office_allocation(self):
+    def test_add_person_does_not_allocate_fully_occupied_office(self):
+        """Testing adding a person to fully occupied office """
         people_list = {"cn01": ["Sam", "wanjala", "Fellow"],
                        "cn02": ["Gideon", "Gitau", "Fellow"],
                        "cn03": ["Charles", "Muthini", "Fellow"],
