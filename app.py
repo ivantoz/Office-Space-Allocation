@@ -155,6 +155,5 @@ class AmityApp(cmd.Cmd):
         exit()
 
 
-
 if __name__ == '__main__':
-	AmityApp().cmdloop()
+    AmityApp().cmdloop()
