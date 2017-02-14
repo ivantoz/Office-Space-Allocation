@@ -106,6 +106,16 @@ class AmityTestCase(unittest.TestCase):
         self.amity.reallocate_person("CN01", "Valhalla")
         self.assertNotIn("CN01", self.amity.office_allocations["Oculus"])
 
+    def test_prints_unallocated(self):
+        self.amity.add_person("cn05", "Roger", "Taracha", "Fellow")
+        self.amity.add_person("cn04", "Mahad", "Walusimbi", "Fellow")
+        self.amity.add_person("cn03", "Charles", "Muthini", "Fellow")
+        self.amity.add_person("cn02", "Sam", "Wanjala", "Fellow")
+        self.amity.add_person("cn01", "Gideon", "Gitau", "Fellow")
+        self.amity.print_unallocated('test_print')
+        self.assertTrue(os.path.isfile('test_print.txt'))
+        os.remove('test_print.txt')
+
 
 
 
