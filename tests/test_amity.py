@@ -44,6 +44,18 @@ class AmityTestCase(unittest.TestCase):
                                                      people_list[empno][2])
         self.assertEqual(assigning_office, "sorry, all rooms are full at this time.")
 
+    def test_add_person_not_allow_more_than_capacity_living_space_allocation(self):
+        fellow_list = {"cn01": ["Sam", "wanjala", "Fellow"],
+                       "cn02": ["Gideon", "Gitau", "Fellow"],
+                       "cn03": ["Charles", "Muthini", "Fellow"],
+                       "cn04": ["Mahad", "Walusimbi", "Fellow"],
+                       "cn05": ["Bryan", "Rotich", "Fellow"]}
+        self.amity.create_room("lspace", "Shell")
+        for empno in fellow_list:
+            assigning_living_space = self.amity.add_person(empno, fellow_list[empno][0], fellow_list[empno][1],
+                                                           fellow_list[empno][2], wants_accomodation="Y")
+        self.assertEqual(assigning_living_space, "sorry, all living space rooms are full at this time.")
+
 
 
 if __name__ == '__main__':
