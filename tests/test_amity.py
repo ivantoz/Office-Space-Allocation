@@ -66,6 +66,18 @@ class AmityTestCase(unittest.TestCase):
         self.amity.create_room("Office", "Hogwarts", "Oculus", "Valhalla", "Krypton")
         self.assertEqual(len(self.amity.all_rooms), room_count_before + 4)
 
+    def test_office_allocation(self):
+        self.amity.create_room("office", "Valhalla")
+        self.amity.add_person("CN07", "Ken", "Langat", "Staff")
+        for room in self.amity.office_allocations:
+            self.assertIn("CN07", self.amity.office_allocations[room])
+
+    def test_add_person_allocates_fellow_livingspace_with_want_accomadation_option(self):
+        self.amity.create_room("lspace", "Shell")
+        self.amity.add_person("CN01", "Gedion", "Gitau", "fellow", wants_accomodation="Y")
+        for room in self.amity.lspace_allocations:
+            self.assertIn("CN01", self.amity.lspace_allocations[room])
+
 
 
 
