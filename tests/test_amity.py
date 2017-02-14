@@ -58,6 +58,7 @@ class AmityTestCase(unittest.TestCase):
 
     def test_add_person_does_not_allocate_staff_living_space(self):
         self.amity.create_room("lspace", "shell")
+        self.amity.create_room("office", "valhalla")
         self.assertEqual(self.amity.add_person("cn01", "Ivan", "Kip", "STAFF", wants_accomodation="Y"),
                          "Staff members Cannot be allocated living space")
 
@@ -132,7 +133,7 @@ class AmityTestCase(unittest.TestCase):
         os.remove('test_print.txt')
 
     def test_save_state(self):
-        self.amity.save_state('test.db')
+        self.amity.save_state('test')
         self.assertTrue(os.path.isfile('test.db'))
         os.remove('test.db')
 
