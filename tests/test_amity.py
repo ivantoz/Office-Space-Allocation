@@ -91,6 +91,13 @@ class AmityTestCase(unittest.TestCase):
         expected_msg = "sorry, {} room already exists!please choose another name".format(name)
         self.assertEqual(msg, expected_msg)
 
+    def test_reallocate_person(self):
+        self.amity.create_room("Office", "Hogwarts")
+        self.amity.add_person("Bryan", "staff")
+        self.amity.create_room("office", "Valhalla")
+        self.amity.reallocate_person("Bryan", "Valhalla")
+        self.assertIn("Bryan", self.amity.office_allocations.values())
+
 
 
 
