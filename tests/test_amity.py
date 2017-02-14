@@ -152,6 +152,12 @@ class AmityTestCase(unittest.TestCase):
         allocating_staff_living_space = self.amity.reallocate_person("chelimo", "Shell")
         self.assertEqual(allocating_staff_living_space, "Sorry you cannot allocate staff living space")
 
+    def test_reallocate_person_same_room(self):
+        self.amity.create_room("office", "Camelot")
+        self.amity.add_person("Percila", "Staff")
+        already_present = self.amity.reallocate_person("Percila", 'Camelot')
+        self.assertEqual(already_present, "The Person is already allocated in the requested room")
+
 
 
 
