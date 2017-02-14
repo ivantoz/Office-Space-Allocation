@@ -46,7 +46,8 @@ class AmityTestCase(unittest.TestCase):
                                                      people_list[empno][2])
         self.assertEqual(assigning_office, "sorry, all rooms are full at this time.")
 
-    def test_add_person_not_allow_more_than_capacity_living_space_allocation(self):
+    def test_add_person_does_not_allocate_more_than_livingspace_capacity(self):
+        """Test that adding person does not allocate more than living space maximum capacity"""
         fellow_list = {"cn01": ["Sam", "wanjala", "Fellow"],
                        "cn02": ["Gideon", "Gitau", "Fellow"],
                        "cn03": ["Charles", "Muthini", "Fellow"],
@@ -59,6 +60,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(assigning_living_space, "sorry, all living space rooms are full at this time.")
 
     def test_add_person_does_not_allocate_staff_living_space(self):
+        """Test add_person does not allocate Living space to a staff member"""
         self.amity.create_room("lspace", "shell")
         self.amity.create_room("office", "valhalla")
         self.assertEqual(self.amity.add_person("cn01", "Ivan", "Kip", "STAFF", wants_accomodation="Y"),
@@ -66,29 +68,34 @@ class AmityTestCase(unittest.TestCase):
                          "Cannot be allocated living space")
 
     def test_create_multiple_rooms(self):
+        """Test creating multiple rooms at once"""
         room_count_before = len(self.amity.all_rooms)
         self.amity.create_room("Office", "Hogwarts", "Oculus", "Valhalla", "Krypton")
         self.assertEqual(len(self.amity.all_rooms), room_count_before + 4)
 
     def test_office_allocation(self):
+        """Test it allocates office space"""
         self.amity.create_room("office", "Valhalla")
         self.amity.add_person("CN07", "Ken", "Langat", "Staff")
         for room in self.amity.office_allocations:
             self.assertIn("CN07", self.amity.office_allocations[room])
 
-    def test_add_person_allocates_fellow_livingspace_with_want_accomadation_option(self):
+    def test_add_person_allocates_fellow_livingspace(self):
+        """Test that add person allocates a fellow living space if wants accommodation"""
         self.amity.create_room("lspace", "Shell")
         self.amity.add_person("CN01", "Gedion", "Gitau", "fellow", wants_accomodation="Y")
         for room in self.amity.lspace_allocations:
             self.assertIn("CN01", self.amity.lspace_allocations[room])
 
     def test_create_room_added_to_system(self):
+        """Test it creates room in Amity"""
         room_count_before = len(self.amity.all_rooms)
         self.amity.create_room("Office", "Valhalla")
         room_count_after = len(self.amity.all_rooms)
         self.assertEqual(room_count_after, (room_count_before + 1))
 
     def test_create_room_return_error_on_duplicate_names(self):
+        """Test creating room with same name should return warning"""
         name = "Hogwarts"
         self.amity.create_room("office", name)
         msg = self.amity.create_room("office", name)
@@ -96,6 +103,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(msg, expected_msg)
 
     def test_reallocate_person(self):
+        """Test amity can reallocate a person"""
         self.amity.create_room("Office", "Hogwarts")
         self.amity.add_person("Bryan", "staff")
         self.amity.create_room("office", "Valhalla")
@@ -103,6 +111,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("Bryan", self.amity.office_allocations.values())
 
     def test_person_is_removed_from_old_room(self):
+        """Test that a reallocated person is removed from old room"""
         self.amity.create_room("office", "Oculus")
         self.amity.add_person("CN01", "Gideon", "Gitau", "staff")
         self.assertIn("CN01", self.amity.office_allocations["Oculus"])
@@ -111,6 +120,8 @@ class AmityTestCase(unittest.TestCase):
         self.assertNotIn("CN01", self.amity.office_allocations["Oculus"])
 
     def test_prints_unallocated(self):
+        """Test print unallocated people to text file"""
+
         self.amity.add_person("cn05", "Roger", "Taracha", "Fellow")
         self.amity.add_person("cn04", "Mahad", "Walusimbi", "Fellow")
         self.amity.add_person("cn03", "Charles", "Muthini", "Fellow")
@@ -121,10 +132,12 @@ class AmityTestCase(unittest.TestCase):
         os.remove('test_print.txt')
 
     def test_print_room_with_non_existent_room_name(self):
+        """Test printing room with non existent room in amity"""
         name = 'oculus'
         self.assertEqual(self.amity.print_room(name), "The room with the name {} does not exist.".format(name))
 
-    def test_prints_allocations_with_filename(self):
+    def test_prints_allocations_to_text_file(self):
+        """Test printing allocations to text file """
         self.amity.create_room('office', 'valhalla')
         self.amity.add_person("cn05", "Roger", "Taracha", "Fellow")
         self.amity.add_person("cn04", "Mahad", "Walusimbi", "Fellow")
@@ -136,11 +149,13 @@ class AmityTestCase(unittest.TestCase):
         os.remove('test_print.txt')
 
     def test_save_state(self):
+        """Test that save state creates database and persist the data to database from memory"""
         self.amity.save_state('test')
         self.assertTrue(os.path.isfile('test.db'))
         os.remove('test.db')
 
     def test_reallocate_person_to_fully_occupied_room(self):
+        """Test reallocating person to fully maximum number of occupants"""
         people_list = {"Sam": "Fellow", "Gideon": "Fellow", "Charles": "Fellow", "Rogers": "Staff", "Mahad": "Fellow",
                        "Percila": "Staff"}
         self.amity.create_room("Office", "Kenya")
@@ -150,6 +165,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(self.amity.reallocate_person("Batian7", "Kenya"), "Sorry the office is fully occupied")
 
     def test_reallocate_staff_to_living_space(self):
+        """test reallocating staff to a living space room"""
         self.amity.create_room("Office", "Longonot")
         self.amity.add_person("chelimo", "Staff")
         self.amity.create_room("lspace", "Shell")
@@ -157,12 +173,14 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(allocating_staff_living_space, "Sorry you cannot allocate staff living space")
 
     def test_reallocate_person_same_room(self):
+        """Test reallocating person to same room"""
         self.amity.create_room("office", "Camelot")
         self.amity.add_person("Percila", "Staff")
         already_present = self.amity.reallocate_person("Percila", 'Camelot')
         self.assertEqual(already_present, "The Person is already allocated in the requested room")
 
     def test_reallocate_to_non_existent_room(self):
+        """Test reallocating person to non existen room"""
         self.amity.create_room("office", "Krypton")
         self.amity.add_person("Kip", "Fellow")
         new_room = "Valhalla"
@@ -171,6 +189,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(unregistered_room_allocation, expected_response)
 
     def test_reallocation_of_unregistered_person(self):
+        """Test reallocating unregistered person"""
         self.amity.create_room("Office", "Hogwarts")
         self.amity.add_person("Bryan", "staff")
         self.amity.create_room("office", "Valhalla")
@@ -179,6 +198,7 @@ class AmityTestCase(unittest.TestCase):
                          ("{} does not exist".format(person_name)))
 
     def test_load_from_file(self):
+        """Test adding people fro text file"""
         self.amity.create_room("lspace", "Shell", "wing")
         self.amity.create_room("office", "Valhalla", "Oculus")
         path = os.path.realpath("data.txt")
@@ -186,11 +206,13 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(len(self.amity.fellows_list), 4)
         self.assertEqual(len(self.amity.staff_list), 3)
 
-    def test_load_from_non_existent_filename(self):
+    def test_load_people_from_non_existent_filename(self):
+        """Test loading data from non existen file or filepath"""
         self.amity.create_room("office", "hogwarts")
         self.assertEqual(self.amity.load_people('datax.txt'), "Please provide valid a text file name !")
 
     def test_load_from_empty_file(self):
+        """Test loading data from empty text file"""
         self.amity.create_room('office', 'oculus')
         filename = "empty.txt"
         file = open(filename, "a")
