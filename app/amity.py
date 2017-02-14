@@ -2,6 +2,10 @@ from collections import defaultdict
 import random
 import os
 from app.model import Person, Staff, Fellow, Room, Office, LivingSpace
+from app.database import Employees, Rooms, create_db, Base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import select
+from sqlalchemy import create_engine
 
 
 class AmityDefaultDict(defaultdict):
@@ -15,13 +19,16 @@ class AmityDefaultDict(defaultdict):
 
 
 class Amity(object):
+    # TODO add docstring documentation with examples for doctest
+    # TODO check that all the logic works
 
     def __init__(self):
         self.all_people = []
         self.all_rooms = []
         self.office_allocations = AmityDefaultDict(list)
         self.lspace_allocations = AmityDefaultDict(list)
-        self.amity_unallocated = []
+        self.office_unallocated = []
+        self.lspace_unallocated = []
         self.fellows_list = []
         self.staff_list = []
 
