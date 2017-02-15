@@ -157,7 +157,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertNotIn("CN01", self.amity.office_allocations["OCULUS"])
         self.assertIn("CN01", self.amity.office_allocations["VALHALLA"])
 
-    def test_reallocate_person_to_fully_occupied_room(self):
+    def test_reallocate_person_to_fully_occupied_office_room(self):
         """Test reallocating person to fully maximum number of occupants"""
         self.amity.add_person("cn07", "Brian", "Rotich", "Fellow")
         people_list = {"cn01": ["Sam", "wanjala", "Fellow"],
@@ -172,6 +172,20 @@ class AmityTestCase(unittest.TestCase):
 
         self.assertEqual(self.amity.reallocate_person("cn07", "Mordor"), "Sorry the Office is currently fully "
                                                                          "occupied!")
+
+    def test_reallocate_person_to_fully_occupied_livingspace_room(self):
+        """Test reallocating person to fully maximum number of occupants"""
+        self.amity.add_person("cn05", "Brian", "Rotich", "Fellow", "Y")
+        people_list = {"cn01": ["Sam", "wanjala", "Fellow", "Y"],
+                       "cn02": ["Gideon", "Gitau", "Fellow", "Y"],
+                       "cn03": ["Charles", "Muthini", "Fellow", "Y"],
+                       "cn04": ["Rogers", "Taracha", "Fellow", "Y"]}
+        self.amity.create_room("lspace", "Shell")
+        for empno in people_list:
+            self.amity.add_person(empno, people_list[empno][0], people_list[empno][1], people_list[empno][2],
+                                  people_list[empno][3])
+
+        self.assertEqual(self.amity.reallocate_person("cn05", "Shell"), "Sorry the LivingSpace is currently fully occupied!")
 
     def test_reallocate_staff_to_living_space(self):
         """test reallocating staff to a living space room"""
