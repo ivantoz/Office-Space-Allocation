@@ -94,7 +94,6 @@ class Amity(object):
         """
 
         all_employees_number = [person.employee_number for person in self.all_people]
-        print(self.all_people)
         if employee_number.upper() in all_employees_number:
             msg = "sorry, this user already exists.please enter valid employee number"
             print(msg)
