@@ -219,7 +219,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual((self.amity.reallocate_person(misplelled_employer_number, "Valhalla")),
                          ("{} does not exist".format(misplelled_employer_number.upper())))
 
-    def test_prints_unallocated(self):
+    def test_prints_unallocated_prints_to_file(self):
         """Test print unallocated people to text file"""
 
         self.amity.add_person("cn05", "Roger", "Taracha", "Fellow")
@@ -230,6 +230,16 @@ class AmityTestCase(unittest.TestCase):
         self.amity.print_unallocated('test_print')
         self.assertTrue(os.path.isfile('test_print.txt'))
         os.remove('test_print.txt')
+
+    def test_prints_unallocated_with_all_people_allocated_rooms(self):
+        """Test print unallocated people to text file"""
+        self.amity.create_room("office", "Camelot")
+        self.amity.add_person("cn05", "Roger", "Taracha", "Fellow")
+        self.amity.add_person("cn04", "Mahad", "Walusimbi", "Fellow")
+        self.amity.add_person("cn03", "Charles", "Muthini", "Fellow")
+        self.amity.add_person("cn02", "Sam", "Wanjala", "Fellow")
+        self.amity.add_person("cn01", "Gideon", "Gitau", "Fellow")
+        self.assertEqual(self.amity.print_unallocated(), "All people have been allocated rooms!")
 
     def test_print_room_with_non_existent_room_name(self):
         """Test printing room with non existent room in amity"""
