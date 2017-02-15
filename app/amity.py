@@ -172,8 +172,12 @@ class Amity(object):
 
         rtype = self.check_room_type(new_room.upper())
         current_room = self.check_allocated_room(employee_number.upper(), rtype.upper())
+        job_type = self.check_employee_job_type(employee_number)
         # import pdb; pdb.set_trace()
         if rtype.upper() == "LSPACE":
+            # check if trying to reallocate staff to Livingspace
+            if job_type.upper() == "STAFF":
+                return "Sorry you cannot allocate staff living space!"
             # check whether the person is already in the allocated room
             if employee_number.upper() in self.lspace_allocations[new_room.upper()]:
                 return "The Person is already allocated in the requested room"
