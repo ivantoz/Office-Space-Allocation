@@ -32,7 +32,7 @@ class Amity(object):
         self.fellows_list = []
         self.staff_list = []
 
-    def create_room(self, room_type, *args):
+    def create_room(self, room_type, args):
 
         """creates a room not previously in system """
         all_room_names = [room.room_name for room in self.all_rooms]
@@ -41,14 +41,15 @@ class Amity(object):
             if len(args) >= 1:
                 msg = ''
                 for room_name in args:
+
                     if room_name.upper() in all_room_names:
-                        msg = "sorry, {} room already exists!please choose another name".format(room_name)
-                        print(msg)
+                        msg = "sorry, {} room already exists!please choose another name".format(room_name.upper())
+                        return msg
                     else:
                         if room_type.upper() == "LSPACE":
                             room = LivingSpace(room_name.upper(), room_type.upper())
                             self.all_rooms.append(room)
-                            msg = "{} Living Space successfully created".format(room_name)
+                            msg = "{} Living Space successfully created".format(room_name.upper())
                             print(msg)
                         elif room_type.upper() == "OFFICE":
                             room = Office(room_name.upper(), room_type.upper())
