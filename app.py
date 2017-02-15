@@ -62,8 +62,7 @@ class AmityApp(cmd.Cmd):
         """
         room_type = arg["<room_type>"]
         room_name = arg["<room_name>"]
-        print(room_name)
-        # self.amity.create_room(room_type, room_name)
+        self.amity.create_room(room_type, room_name)
 
     @app_exec
     def do_add_person(self, arg):
