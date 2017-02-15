@@ -73,6 +73,9 @@ class AmityTestCase(unittest.TestCase):
         self.amity.create_room("Office", "Hogwarts", "Oculus", "Valhalla", "Krypton")
         self.assertEqual(len(self.amity.all_rooms), room_count_before + 4)
 
+    def test_create_room_with_unknown_room_type(self):
+        self.assertEqual(self.amity.create_room("livingspace", "Shell"), "sorry, that room_type does not exist")
+
     def test_office_allocation(self):
         """Test it allocates office space"""
         self.amity.create_room("office", "Valhalla")
