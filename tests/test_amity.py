@@ -237,8 +237,6 @@ class AmityTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile('test.db'))
         os.remove('test.db')
 
-
-
     def test_load_from_file(self):
         """Test adding people fro text file"""
         self.amity.create_room("lspace", "Shell", "wing")
