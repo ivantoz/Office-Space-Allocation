@@ -6,6 +6,7 @@ from app.database import Employees, Rooms, create_db, Base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
 from sqlalchemy import create_engine
+from app.utilities import bcolors
 
 
 class AmityDefaultDict(defaultdict):
@@ -304,74 +305,80 @@ class Amity(object):
     def print_allocations(self, filename=None):
         """Prints a list of allocations onto the screen. Specifying the optional -o option here outputs the registered
         allocations to a txt file"""
+        if len(self.office_allocations) or len(self.lspace_allocations) != 0:
+            output = ""
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            heading = 'AMITY ROOM ALLOCATIONS'
+            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            for office, empnos in self.office_allocations.items():
+                output += '\n\t' + bcolors.OKGREEN + office + bcolors.ENDC + "\n"
+                names = ''
+                for empno in empnos:
+                    firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == empno]
+                    lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
+                    names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+                output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
 
-        print("=" * 50 + "\n" + " " * 15 + "AMITY ROOM ALLOCATIONS\n" + "=" * 50)
-        for office, empnos in self.office_allocations.items():
-            print(office)
-            print("-" * 50)
-            print("\n")
-            names = ''
-            for empno in empnos:
-                firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == empno]
-                lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
-                names += firstname[0].upper() + " " + lastname[0].upper() + ", "
-            print(names)
-            print("\n" + "-" * 50)
+                if filename:
+                    file = open(filename + ".txt", "a")
+                    file.write('\t' + "-" * 50 + '\n\t\t\t\t\t' + heading.upper() + '\n\t' + "-" * 50 + "\n")
+                    file.write('\n')
+                    file.write('\t' + office + "\n")
+                    file.write('\t' + names)
+                    file.write('\n\t' + "_" * 50 + "\n")
 
-            if filename:
+            for lspace, empnos in self.lspace_allocations.items():
+                output += '\n\t' + bcolors.OKGREEN + lspace + bcolors.ENDC + '\n'
+                lspace_names = ''
+                for empno in empnos:
+                    firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == empno]
+                    lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
+                    lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+                output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
 
-                file = open(filename + ".txt", "a")
-                file.write("=" * 50 + "\n" + " " * 15 + "AMITY ROOM ALLOCATIONS\n" + "=" * 50)
-                file.write("\n")
-                file.write(office)
-                file.write("\n")
-                file.write("-" * 50 + "\n")
-                file.write(names)
-                file.write("\n")
-        for lspace, empnos in self.lspace_allocations.items():
-            print(lspace.upper())
-            print("-" * 50)
-            print("\n")
-            lspace_names = ''
-            for empno in empnos:
-                firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == empno]
-                lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
-                lspace_names += firstname[0].upper() + " " + lastname[0].upper() + ", "
-            print(lspace_names)
-            print("\n" + "-" * 50 + "\n")
-
-            if filename:
-                file = open(filename + ".txt", "a")
-                file.write("\n")
-                file.write("-" * 50 + "\n")
-                file.write(lspace)
-                file.write("\n")
-                file.write("-" * 50 + "\n")
-                file.write(lspace_names)
-                file.write("\n")
+                if filename:
+                    file = open(filename + ".txt", "a")
+                    file.write("\n")
+                    file.write('\t' + lspace + "\n")
+                    file.write('\t' + lspace_names)
+                    file.write('\n\t' + "_" * 50 + "\n")
+                    file.close()
+            return output
+        else:
+            return "No person allocated room yet!"
 
     def print_unallocated(self, filename=None):
         """Prints a list of unallocated people to the screen. Specifying the -o option here outputs the information to
         the txt file provided"""
 
         if len(self.office_unallocated) or len(self.lspace_unallocated) != 0:
-            print("=" * 50 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "=" * 50 + "\n")
+            output = ""
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            heading = 'UNALLOCATED OFFICE'
+            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
             names = ''
             for employee_number in self.office_unallocated :
                 firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == employee_number]
                 lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == employee_number]
-                names += firstname[0] + " " + lastname[0] + ", "
-            print(names)
-            print("=" * 50 + "\n" + " " * 15 + "UNALLOCATED LIVING SPACE\n" + "=" * 50 + "\n")
+                names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+                output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            heading2 = 'UNALLOCATED LIVING SPACE'
+            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading2.upper() + '\n' + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
             lspace_names = ''
             for employee_numb in self.lspace_unallocated:
                 fname = [person.first_name for person in self.all_people if
                              person.employee_number.upper() == employee_numb]
                 lname = [person.last_name for person in self.all_people if
                             person.employee_number.upper() == employee_numb]
-                lspace_names += fname[0] + " " + lname[0] + ", "
-            print(lspace_names)
-
+                lspace_names += fname[0].capitalize() + " " + lname[0].capitalize() + ", "
+                output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
             if filename:
                 file = open(filename + ".txt", "a")
                 file.write("=" * 50 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "=" * 50 + "\n")
@@ -379,6 +386,8 @@ class Amity(object):
                 file.write("\n")
                 file.write("=" * 50 + "\n" + " " * 15 + "UNALLOCATED LIVING SPACE\n" + "=" * 50 + "\n")
                 file.write(lspace_names)
+                file.close()
+            return output
 
         else:
             return "All people have been allocated rooms!"
@@ -386,38 +395,45 @@ class Amity(object):
     def print_room(self, room_name):
         """Prints  the names of all the people in room_name on the screen."""
 
-        for room in self.all_rooms:
-            if room_name.upper() == room.room_name:
-                print("=" * 50 + "\n" + room_name.upper() + "\n" + "=" * 50)
-                if room.room_type == 'lspace'.upper():
-                    if room_name.upper() in self.lspace_allocations:
-                        empnos = self.lspace_allocations[room_name.upper()]
-                        names = ''
-                        for empno in empnos:
-                            firstname = [person.first_name for person in self.all_people if
-                                         person.employee_number.upper() == empno]
-                            lastname = [person.last_name for person in self.all_people if
-                                        person.employee_number.upper() == empno]
-                            names += firstname[0] + " " + lastname[0] + ", "
+        all_rooms_names = [room.room_name for room in self.all_rooms]
+        if room_name.upper() in all_rooms_names:
+            output = ''
+            for room in self.all_rooms:
+                if room_name.upper() == room.room_name:
+                    output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                    output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + room_name.upper() + '\n' + bcolors.ENDC
+                    output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                    if room.room_type == 'lspace'.upper():
+                        if room_name.upper() in self.lspace_allocations:
+                            empnos = self.lspace_allocations[room_name.upper()]
+                            names = ''
+                            for empno in empnos:
+                                firstname = [person.first_name for person in self.all_people if
+                                             person.employee_number.upper() == empno]
+                                lastname = [person.last_name for person in self.all_people if
+                                            person.employee_number.upper() == empno]
+                                names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                        print(names)
+                            output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+                            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
 
-                elif room.room_type == 'office'.upper():
-                    if room_name.upper() in self.office_allocations:
-                        empnos = self.office_allocations[room_name.upper()]
-                        names = ''
-                        for empno in empnos:
-                            firstname = [person.first_name for person in self.all_people if
-                                         person.employee_number.upper() == empno]
-                            lastname = [person.last_name for person in self.all_people if
-                                        person.employee_number.upper() == empno]
-                            names += firstname[0] + " " + lastname[0] + ", "
+                    elif room.room_type == 'office'.upper():
+                        if room_name.upper() in self.office_allocations:
+                            empnos = self.office_allocations[room_name.upper()]
+                            lspace_names = ''
+                            for empno in empnos:
+                                firstname = [person.first_name for person in self.all_people if
+                                             person.employee_number.upper() == empno]
+                                lastname = [person.last_name for person in self.all_people if
+                                            person.employee_number.upper() == empno]
+                                lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                        print(names)
+                            output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+                            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
 
-                return
-
-        return "The room with the name {} does not exist.".format(room_name)
+            return output
+        else:
+            return "The room with the name {} does not exist.".format(room_name)
 
     def save_state(self, dbname=None):
         """ Persists all the data stored in the app to a SQLite database. Specifying the --db parameter explicitly
