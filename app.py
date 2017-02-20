@@ -95,7 +95,7 @@ class AmityApp(cmd.Cmd):
         Usage: print_allocations [--o=filename]
         """
         filename = arg["--o"] or ""
-        self.amity.print_allocations(filename)
+        print(self.amity.print_allocations(filename))
 
     @app_exec
     def do_print_unallocated(self, arg):
@@ -104,7 +104,7 @@ class AmityApp(cmd.Cmd):
         Usage: print_unallocated [--o=filename]
         """
         filename = arg["--o"] or ""
-        self.amity.print_unallocated(filename)
+        print(self.amity.print_unallocated(filename))
 
     @app_exec
     def do_load_people(self, arg):
