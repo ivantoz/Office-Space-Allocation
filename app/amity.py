@@ -311,6 +311,9 @@ class Amity(object):
             heading = 'AMITY ROOM ALLOCATIONS'
             output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            if filename:
+                file = open(filename + ".txt", "a")
+                file.write('\t' + "-" * 50 + '\n\t\t\t\t\t' + heading.upper() + '\n\t' + "-" * 50 + "\n")
             for office, empnos in self.office_allocations.items():
                 output += '\n\t' + bcolors.OKGREEN + office + bcolors.ENDC + "\n"
                 names = ''
@@ -319,11 +322,10 @@ class Amity(object):
                     lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
                     names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
                 output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
 
                 if filename:
                     file = open(filename + ".txt", "a")
-                    file.write('\t' + "-" * 50 + '\n\t\t\t\t\t' + heading.upper() + '\n\t' + "-" * 50 + "\n")
                     file.write('\n')
                     file.write('\t' + office + "\n")
                     file.write('\t' + names)
@@ -337,7 +339,7 @@ class Amity(object):
                     lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
                     lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
                 output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
 
                 if filename:
                     file = open(filename + ".txt", "a")
@@ -345,7 +347,7 @@ class Amity(object):
                     file.write('\t' + lspace + "\n")
                     file.write('\t' + lspace_names)
                     file.write('\n\t' + "_" * 50 + "\n")
-                    file.close()
+
             return output
         else:
             return "No person allocated room yet!"
@@ -365,8 +367,8 @@ class Amity(object):
                 firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == employee_number]
                 lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == employee_number]
                 names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
-                output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
             heading2 = 'UNALLOCATED LIVING SPACE'
             output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading2.upper() + '\n' + bcolors.ENDC
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
@@ -377,14 +379,14 @@ class Amity(object):
                 lname = [person.last_name for person in self.all_people if
                             person.employee_number.upper() == employee_numb]
                 lspace_names += fname[0].capitalize() + " " + lname[0].capitalize() + ", "
-                output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
             if filename:
                 file = open(filename + ".txt", "a")
-                file.write("=" * 50 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "=" * 50 + "\n")
+                file.write("-" * 50 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "-" * 50 + "\n")
                 file.write(names)
                 file.write("\n")
-                file.write("=" * 50 + "\n" + " " * 15 + "UNALLOCATED LIVING SPACE\n" + "=" * 50 + "\n")
+                file.write("-" * 50 + "\n" + " " * 15 + "UNALLOCATED LIVING SPACE\n" + "-" * 50 + "\n")
                 file.write(lspace_names)
                 file.close()
             return output
@@ -406,30 +408,36 @@ class Amity(object):
                     if room.room_type == 'lspace'.upper():
                         if room_name.upper() in self.lspace_allocations:
                             empnos = self.lspace_allocations[room_name.upper()]
-                            names = ''
-                            for empno in empnos:
-                                firstname = [person.first_name for person in self.all_people if
-                                             person.employee_number.upper() == empno]
-                                lastname = [person.last_name for person in self.all_people if
-                                            person.employee_number.upper() == empno]
-                                names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+                            if len(empnos):
+                                names = ''
+                                for empno in empnos:
+                                    firstname = [person.first_name for person in self.all_people if
+                                                 person.employee_number.upper() == empno]
+                                    lastname = [person.last_name for person in self.all_people if
+                                                person.employee_number.upper() == empno]
+                                    names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                            output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-                            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                                output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+                                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                            else:
+                                output += "No one is allocated to {} room".format(room_name)
 
                     elif room.room_type == 'office'.upper():
                         if room_name.upper() in self.office_allocations:
                             empnos = self.office_allocations[room_name.upper()]
-                            lspace_names = ''
-                            for empno in empnos:
-                                firstname = [person.first_name for person in self.all_people if
-                                             person.employee_number.upper() == empno]
-                                lastname = [person.last_name for person in self.all_people if
-                                            person.employee_number.upper() == empno]
-                                lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+                            if len(empnos):
+                                lspace_names = ''
+                                for empno in empnos:
+                                    firstname = [person.first_name for person in self.all_people if
+                                                 person.employee_number.upper() == empno]
+                                    lastname = [person.last_name for person in self.all_people if
+                                                person.employee_number.upper() == empno]
+                                    lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                            output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-                            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                                output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+                                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                            else:
+                                output += "No one is allocated to {} room".format(room_name)
 
             return output
         else:
@@ -487,54 +495,61 @@ class Amity(object):
 
     def load_state(self, dbname):
 
-        engine = create_engine('sqlite:///' + dbname)
-        Session = sessionmaker(bind=engine)
-        session = Session()
+        if os.path.exists(dbname):
+            try:
+                engine = create_engine('sqlite:///' + dbname)
+                Session = sessionmaker(bind=engine)
+                session = Session()
 
-        people = session.query(Employees).all()
-        rooms = session.query(Rooms).all()
-        all_rooms_names = [room.room_name for room in self.all_rooms]
-        for room in rooms:
-            if room.room_name not in all_rooms_names:
-                if room.room_type.upper() == "LSPACE":
-                    lspace = LivingSpace(room.room_name.upper(), room.room_type.upper())
-                    lspace.occupants = room.occupants
-                    self.all_rooms.append(lspace)
-                elif room.room_type.upper() == "OFFICE":
-                    office = Office(room.room_name.upper(), room.room_type.upper())
-                    office.occupants = room.occupants
-                    self.all_rooms.append(office)
-        all_people_numbers = [person.employee_number for person in self.all_people]
-        for person in people:
-            if person.employee_number not in all_people_numbers:
-                if person.job_type.upper() == "FELLOW":
-                    fellow = Fellow(person.employee_number.upper(), person.first_name.upper(), person.last_name.upper(),
-                                    person.job_type.upper(), person.wants_accommodation.upper())
+                people = session.query(Employees).all()
+                rooms = session.query(Rooms).all()
+                all_rooms_names = [room.room_name for room in self.all_rooms]
+                for room in rooms:
+                    if room.room_name not in all_rooms_names:
+                        if room.room_type.upper() == "LSPACE":
+                            lspace = LivingSpace(room.room_name.upper(), room.room_type.upper())
+                            lspace.occupants = room.occupants
+                            self.all_rooms.append(lspace)
+                        elif room.room_type.upper() == "OFFICE":
+                            office = Office(room.room_name.upper(), room.room_type.upper())
+                            office.occupants = room.occupants
+                            self.all_rooms.append(office)
+                all_people_numbers = [person.employee_number for person in self.all_people]
+                for person in people:
+                    if person.employee_number not in all_people_numbers:
+                        if person.job_type.upper() == "FELLOW":
+                            fellow = Fellow(person.employee_number.upper(), person.first_name.upper(), person.last_name.upper(),
+                                            person.job_type.upper(), person.wants_accommodation.upper())
 
-                    self.all_people.append(fellow)
-                    self.fellows_list.append(fellow)
-                    if person.lspace_allocated.upper() == "N":
-                        if person.employee_number.upper() not in self.lspace_unallocated:
-                            self.lspace_unallocated.append(person.employee_number.upper())
-                    else:
-                        self.lspace_allocations[person.lspace_allocated].append(person.employee_number.upper())
+                            self.all_people.append(fellow)
+                            self.fellows_list.append(fellow)
+                            if person.lspace_allocated.upper() == "N":
+                                if person.employee_number.upper() not in self.lspace_unallocated:
+                                    self.lspace_unallocated.append(person.employee_number.upper())
+                            else:
+                                self.lspace_allocations[person.lspace_allocated].append(person.employee_number.upper())
 
-                    if person.office_allocated.upper() == "N":
-                        if person.employee_number.upper() not in self.office_unallocated:
-                            self.office_unallocated.append(person.employee_number.upper())
-                    else:
-                        self.office_allocations[person.office_allocated].append(person.employee_number.upper())
+                            if person.office_allocated.upper() == "N":
+                                if person.employee_number.upper() not in self.office_unallocated:
+                                    self.office_unallocated.append(person.employee_number.upper())
+                            else:
+                                self.office_allocations[person.office_allocated].append(person.employee_number.upper())
 
-                elif person.job_type.upper() == "STAFF":
-                    staff = Staff(person.employee_number.upper(), person.first_name.upper(), person.last_name.upper(),
-                                  person.job_type.upper(), person.wants_accommodation.upper())
-                    self.all_people.append(staff)
-                    self.staff_list.append(staff)
-                    if person.office_allocated.upper() == "N":
-                        if person.employee_number.upper() not in self.office_unallocated:
-                            self.office_unallocated.append(person.employee_number.upper())
-                    else:
-                        self.office_allocations[person.office_allocated].append(person.employee_number.upper())
+                        elif person.job_type.upper() == "STAFF":
+                            staff = Staff(person.employee_number.upper(), person.first_name.upper(), person.last_name.upper(),
+                                          person.job_type.upper(), person.wants_accommodation.upper())
+                            self.all_people.append(staff)
+                            self.staff_list.append(staff)
+                            if person.office_allocated.upper() == "N":
+                                if person.employee_number.upper() not in self.office_unallocated:
+                                    self.office_unallocated.append(person.employee_number.upper())
+                            else:
+                                self.office_allocations[person.office_allocated].append(person.employee_number.upper())
+                return "loading data from {} done".format(dbname)
+            except:
+                return "There was error loading from database"
+        else:
+            return "Database with name {} does not exist".format(dbname)
 
 
 
