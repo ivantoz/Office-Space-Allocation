@@ -289,6 +289,11 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(self.amity.load_people(filename), "The file is empty")
         os.remove(filename)
 
+    def test_load_state_with_non_existent_database(self):
+        db_name = 'test.db'
+        self.assertFalse(os.path.isfile(db_name))
+        self.assertEqual(self.amity.load_state('test.db'), "Database with name {} does not exist".format(db_name))
+
 
 if __name__ == '__main__':
     unittest.main()
