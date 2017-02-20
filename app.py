@@ -10,7 +10,7 @@ Usage:
     print_allocations [--o=filename]
     print_unallocated [--o=filename]
     load_state [--dbname]
-    save_state [--o=db_name]
+    save_state (--db_name=sqlite_db)
     quit
     (-i | --interactive)
 Options:
@@ -122,28 +122,28 @@ class AmityApp(cmd.Cmd):
         """
         person_name = arg["<person_name>"]
         new_room = arg["<new_room>"]
-        self.amity.reallocate_person(person_name, new_room)
+        print(self.amity.reallocate_person(person_name, new_room))
 
     @app_exec
     def do_load_state(self, arg):
 
         """
         Loads data from a database into the application
-        Usage: load_state <filename>
+        Usage: load_state (--db_name=sqlite_db)
         """
-        self.amity.load_state(arg["<filename>"])
+        print(self.amity.load_state(arg['--db_name']))
 
     @app_exec
     def do_save_state(self, arg):
         """
         Persists all the data stored in the app to a SQLite database. Specifying the --db parameter explicitly stores the data in the sqlite_database specified.
-        Usage: save_state [--db_name=sqlite_db]
+        Usage: save_state (--db_name=sqlite_db)
         """
         db = arg['--db_name']
         if db:
             self.amity.save_state(db)
         else:
-            self.amity.save_state()
+            return "enter db_name"
 
     @app_exec
     def do_quit(self, arg):
