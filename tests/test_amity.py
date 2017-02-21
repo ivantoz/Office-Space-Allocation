@@ -121,7 +121,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("CN01", self.amity.lspace_allocations["WING"])
 
     def test_reallocate_person_from_unallocated_list(self):
-        """Test amity can reallocate a person from one unallocated list to office or livingspace"""
+        """Test amity can reallocate a person from unallocated list to office or livingspace """
         self.amity.add_person("CN01", "Brian", "Rotich", "fellow", "Y")
         self.amity.create_room("office", ["Oculus"])
         self.amity.create_room("lspace", ["Shell"])
