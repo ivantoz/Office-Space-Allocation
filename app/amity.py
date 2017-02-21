@@ -357,7 +357,7 @@ class Amity(object):
                 file.write(lspace_names)
                 file.close()
             return output
-        return "All people have been allocated rooms!"
+        return "No one in the unallocated list!"
 
     def print_room(self, room_name):
         """Prints  the names of all the people in room_name on the screen."""
