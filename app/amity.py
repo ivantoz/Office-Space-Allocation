@@ -163,7 +163,6 @@ class Amity(object):
         room_type = self.check_room_type(new_room.upper())
         current_room = self.check_allocated_room(employee_number.upper(), room_type.upper())
         job_type = self.check_employee_job_type(employee_number)
-        # import pdb; pdb.set_trace()
         if room_type.upper() == "LSPACE":
             # check if trying to reallocate staff to Livingspace
             if job_type.upper() == "STAFF":
@@ -171,67 +170,57 @@ class Amity(object):
             # check whether the person is already in the allocated room
             if employee_number.upper() in self.lspace_allocations[new_room.upper()]:
                 return "The Person is already allocated in the requested room"
+            new_room_occupant_count = [room.occupants for room in self.all_rooms if room.room_name ==
+                                       new_room.upper()]
+            if current_room:
+                if new_room_occupant_count[0] < 4:
+                    self.lspace_allocations[current_room.upper()].remove(employee_number.upper())
+                    self.lspace_allocations[new_room.upper()].append(employee_number.upper())
+                    for room in self.all_rooms:
+                        if room.room_name == new_room.upper():
+                            room.occupants += 1
+                        if room.room_name == current_room:
+                            room.occupants -= 1
+                    return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
+                return "Sorry the LivingSpace is currently fully occupied!"
+
             else:
-
-                new_room_occupant_count = [room.occupants for room in self.all_rooms if room.room_name ==
-                                           new_room.upper()]
-
-                if current_room:
-                    if new_room_occupant_count[0] < 4:
-                        self.lspace_allocations[current_room.upper()].remove(employee_number.upper())
-                        self.lspace_allocations[new_room.upper()].append(employee_number.upper())
-                        for room in self.all_rooms:
-                            if room.room_name == new_room.upper():
-                                room.occupants += 1
-                            if room.room_name == current_room:
-                                room.occupants -= 1
-                        return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
-                    else:
-                        return "Sorry the LivingSpace is currently fully occupied!"
-
-                else:
-                    if new_room_occupant_count[0] < 4:
-                        for room in self.all_rooms:
-                            if room.room_name == new_room.upper():
-                                room.occupants += 1
-                        self.lspace_unallocated.remove(employee_number.upper())
-                        self.lspace_allocations[new_room.upper()].append(employee_number.upper())
-                        return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
-                    else:
-                        return "Sorry the LivingSpace is currently fully occupied!"
+                if new_room_occupant_count[0] < 4:
+                    for room in self.all_rooms:
+                        if room.room_name == new_room.upper():
+                            room.occupants += 1
+                    self.lspace_unallocated.remove(employee_number.upper())
+                    self.lspace_allocations[new_room.upper()].append(employee_number.upper())
+                    return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
+                return "Sorry the LivingSpace is currently fully occupied!"
 
         if room_type.upper() == "OFFICE":
             # check whether the person is already in the allocated room
             if employee_number.upper() in self.office_allocations[new_room.upper()]:
                 return "The Person is already allocated in the requested room"
+            new_room_occupant_count = [room.occupants for room in self.all_rooms if
+                                       room.room_name == new_room.upper()]
+            if current_room:
+                if new_room_occupant_count[0] < 6:
+                    for room in self.all_rooms:
+                        if room.room_name == new_room.upper():
+                            room.occupants += 1
+                        if room.room_name == current_room:
+                            room.occupants -= 1
+                    self.office_allocations[current_room.upper()].remove(employee_number.upper())
+                    self.office_allocations[new_room.upper()].append(employee_number.upper())
+                    return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
+                return "Sorry the Office is currently fully occupied!"
+
             else:
-
-                new_room_occupant_count = [room.occupants for room in self.all_rooms if
-                                           room.room_name == new_room.upper()]
-
-                if current_room:
-                    if new_room_occupant_count[0] < 6:
-                        for room in self.all_rooms:
-                            if room.room_name == new_room.upper():
-                                room.occupants += 1
-                            if room.room_name == current_room:
-                                room.occupants -= 1
-                        self.office_allocations[current_room.upper()].remove(employee_number.upper())
-                        self.office_allocations[new_room.upper()].append(employee_number.upper())
-                        return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
-                    else:
-                        return "Sorry the Office is currently fully occupied!"
-
-                else:
-                    if new_room_occupant_count[0] < 6:
-                        for room in self.all_rooms:
-                            if room.room_name == new_room.upper():
-                                room.occupants += 1
-                        self.office_unallocated.remove(employee_number.upper())
-                        self.office_allocations[new_room.upper()].append(employee_number.upper())
-                        return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
-                    else:
-                        return "Sorry the Office is currently fully occupied!"
+                if new_room_occupant_count[0] < 6:
+                    for room in self.all_rooms:
+                        if room.room_name == new_room.upper():
+                            room.occupants += 1
+                    self.office_unallocated.remove(employee_number.upper())
+                    self.office_allocations[new_room.upper()].append(employee_number.upper())
+                    return "{} has been moved to {}".format(employee_number.upper(), new_room.upper())
+                return "Sorry the Office is currently fully occupied!"
 
     def check_room_type(self, name):
         """checks room type allocated to a person"""
