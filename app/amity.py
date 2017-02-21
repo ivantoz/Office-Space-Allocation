@@ -68,13 +68,11 @@ class Amity(object):
         for room in self.all_rooms:
 
             if room.room_type == room_type.upper():
-                if room.room_type == "LSPACE":
-                    if room.occupants < room.max_occupants:
-                        available.append(room)
+                if room.room_type == "LSPACE" and room.occupants < room.max_occupants:
+                    available.append(room)
 
-                if room.room_type == "OFFICE":
-                    if room.occupants < room.max_occupants:
-                        available.append(room)
+                if room.room_type == "OFFICE" and room.occupants < room.max_occupants:
+                    available.append(room)
 
         if available:
             return random.choice(available)
@@ -91,7 +89,6 @@ class Amity(object):
         all_employees_number = [person.employee_number for person in self.all_people]
         if employee_number.upper() in all_employees_number:
             msg = "sorry, this user already exists.please enter valid employee number"
-            print(msg)
             return msg
         else:
             if job_type.upper() == "STAFF":

@@ -17,7 +17,6 @@ class Staff(Person):
 
 class Fellow(Person):
     def __init__(self, employee_number, first_name, last_name, job_type, wants_accommodation='N'):
-
         super(Fellow, self).__init__(employee_number, first_name, last_name, job_type, wants_accommodation)
 
 
