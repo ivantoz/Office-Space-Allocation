@@ -254,7 +254,7 @@ class Amity(object):
             with open(filename) as inputfl:
 
                 content = inputfl.readlines()
-                if content:
+                if not content:
                     return "The file is empty"
                 for line in content:
                     person_data = line.split()
