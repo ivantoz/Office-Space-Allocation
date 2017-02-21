@@ -518,7 +518,7 @@ class Amity(object):
 
         return "Database with name {} does not exist".format(dbname)
 
-    def print_rooms(self):
+    def print_all_rooms(self):
         """Prints all rooms created in Amity"""
         if not self.all_rooms:
             return "No rooms created yet"
