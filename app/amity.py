@@ -518,6 +518,39 @@ class Amity(object):
 
         return "Database with name {} does not exist".format(dbname)
 
+    def print_rooms(self):
+        """Prints all rooms created in Amity"""
+        if not self.all_rooms:
+            return "No rooms created yet"
+        output = ""
+        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+        heading = 'AMITY OFFICES'
+        output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n\n'
+        output += "\n"
+        all_office_room_names = [room.room_name for room in self.all_rooms if room.room_type == "OFFICE"]
+        if all_office_room_names:
+            for room in all_office_room_names:
+                output += '\t' + bcolors.OKBLUE + room.capitalize() + "," + bcolors.ENDC
+            output += "\n"
+        else:
+            output += '\n\t' + bcolors.WARNING + "No Office room created yet" + bcolors.ENDC + "\n"
+
+        output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+        heading = 'AMITY LIVING SPACES'
+        output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n\n'
+        all_livingspace_room_names = [room.room_name for room in self.all_rooms if room.room_type == "LSPACE"]
+        if all_livingspace_room_names:
+            for room in all_livingspace_room_names:
+                output += '\t' + bcolors.OKBLUE + room.capitalize() + "," + bcolors.ENDC
+        else:
+            output += '\n\t' + bcolors.WARNING + "No Living Space room created yet" + bcolors.ENDC + "\n"
+        return output
+
+
+
+
 
 
 
