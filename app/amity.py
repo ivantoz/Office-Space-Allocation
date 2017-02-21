@@ -468,7 +468,7 @@ class Amity(object):
                 session.commit()
 
     def load_state(self, dbname):
-
+        """Loads data from a database into the application."""
         if os.path.exists(dbname):
             try:
                 engine = create_engine('sqlite:///' + dbname)
@@ -522,8 +522,8 @@ class Amity(object):
                 return "loading data from {} done".format(dbname)
             except:
                 return "There was error loading from database"
-        else:
-            return "Database with name {} does not exist".format(dbname)
+
+        return "Database with name {} does not exist".format(dbname)
 
 
 
