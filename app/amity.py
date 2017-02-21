@@ -236,16 +236,14 @@ class Amity(object):
             for room in self.office_allocations:
                 if empno.upper() in self.office_allocations[room]:
                     return room
-        else:
-            return None
+        return None
 
     def check_employee_job_type(self, empno):
         """Check person job type using employee number"""
         for empnos in self.all_people:
             if empnos.employee_number == empno.upper():
                 return empnos.job_type
-            else:
-                return None
+            return None
 
     def load_people(self, filename):
         """Adds people to rooms from a text file"""
