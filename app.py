@@ -62,7 +62,7 @@ class AmityApp(cmd.Cmd):
         """
         room_type = arg["<room_type>"]
         room_name = arg["<room_name>"]
-        self.amity.create_room(room_type, room_name)
+        print(self.amity.create_room(room_type, room_name))
 
     @app_exec
     def do_add_person(self, arg):
@@ -78,7 +78,8 @@ class AmityApp(cmd.Cmd):
         if wants_accommodation is not "Y":
             wants_accommodation = "N"
 
-        self.amity.add_person(employee_no, first_name, last_name, job_type, wants_accomodation=wants_accommodation)
+        print(self.amity.add_person(employee_no, first_name, last_name, job_type,
+                                    wants_accomodation=wants_accommodation))
 
     @app_exec
     def do_print_room(self, arg):
