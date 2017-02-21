@@ -327,14 +327,13 @@ class Amity(object):
                     file.write('\n\t' + "_" * 50 + "\n")
 
             return output
-        else:
-            return "No person allocated room yet!"
+        return "No person allocated room yet!"
 
     def print_unallocated(self, filename=None):
         """Prints a list of unallocated people to the screen. Specifying the -o option here outputs the information to
         the txt file provided"""
 
-        if len(self.office_unallocated) or len(self.lspace_unallocated) != 0:
+        if self.office_unallocated or self.lspace_unallocated:
             output = ""
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
             heading = 'UNALLOCATED OFFICE'
@@ -368,9 +367,7 @@ class Amity(object):
                 file.write(lspace_names)
                 file.close()
             return output
-
-        else:
-            return "All people have been allocated rooms!"
+        return "All people have been allocated rooms!"
 
     def print_room(self, room_name):
         """Prints  the names of all the people in room_name on the screen."""
@@ -418,8 +415,7 @@ class Amity(object):
                                 output += "No one is allocated to {} room".format(room_name)
 
             return output
-        else:
-            return "The room with the name {} does not exist.".format(room_name)
+        return "The room with the name {} does not exist.".format(room_name)
 
     def save_state(self, dbname=None):
         """ Persists all the data stored in the app to a SQLite database. Specifying the --db parameter explicitly
