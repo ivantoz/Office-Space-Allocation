@@ -21,7 +21,6 @@ class AmityDefaultDict(defaultdict):
 
 class Amity(object):
 
-
     def __init__(self):
         self.all_people = []
         self.all_rooms = []
