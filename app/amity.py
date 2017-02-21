@@ -20,8 +20,7 @@ class AmityDefaultDict(defaultdict):
 
 
 class Amity(object):
-    # TODO add docstring documentation with examples for doctest
-    # TODO check that all the logic works
+
 
     def __init__(self):
         self.all_people = []
