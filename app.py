@@ -113,7 +113,7 @@ class AmityApp(cmd.Cmd):
         Adds people to rooms from a txt file.
         Usage: load_people <filename>
         """
-        self.amity.load_people(arg["<filename>"])
+        print(self.amity.load_people(arg["<filename>"]))
 
     @app_exec
     def do_reallocate_person(self, arg):
