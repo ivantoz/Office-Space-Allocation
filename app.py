@@ -7,6 +7,7 @@ Usage:
     reallocate_person <person_identifier> <new_room>
     load_people <filename>
     print_room <room_name>
+    print_all_rooms
     print_allocations [--o=filename]
     print_unallocated [--o=filename]
     load_state [--dbname]
@@ -88,6 +89,14 @@ class AmityApp(cmd.Cmd):
         Usage: print_room <room_name>
         """
         print(self.amity.print_room(arg["<room_name>"]))
+
+    @app_exec
+    def do_print_all_rooms(self, arg):
+        """
+        Prints  the names of all the rooms in Amity on the screen.
+        Usage: print_all_rooms
+        """
+        print(self.amity.print_all_rooms())
 
     @app_exec
     def do_print_allocations(self, arg):
