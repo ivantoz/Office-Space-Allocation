@@ -32,15 +32,15 @@ class Amity(object):
         self.fellows_list = []
         self.staff_list = []
 
-    def create_room(self, room_type, args):
+    def create_room(self, room_type, room_name):
 
         """creates a room not previously in system """
         all_room_names = [room.room_name for room in self.all_rooms]
         msg = ''
         if room_type.upper() in ["LSPACE", "OFFICE"]:
-            if len(args) >= 1:
+            if room_name:
                 msg = ''
-                for room_name in args:
+                for room_name in room_name:
 
                     if room_name.upper() in all_room_names:
                         msg = "sorry, {} room already exists!please choose another name".format(room_name.upper())
@@ -57,15 +57,10 @@ class Amity(object):
                             msg = "{} Office successfully created".format(room_name.upper())
                             print(msg)
                 return msg
-
-            elif len(args) < 1:
-                notice = 'A room should have a name'
-                print(notice)
-                return notice
+            notice = 'A room should have a name'
+            return notice
         else:
-            msg = "sorry, that room_type does not exist"
-            print(msg)
-            return msg
+            return "sorry, that room_type does not exist"
 
     def generate_room(self, r_type):
         """returns a list of all rooms not full"""
