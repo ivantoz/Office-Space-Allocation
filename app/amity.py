@@ -132,7 +132,7 @@ class Amity(object):
 
                 if wants_accomodation.upper() == "Y":
                     allocated_lspace = self.generate_room("LSPACE")
-                    if allocated_lspace is not None:
+                    if allocated_lspace:
                         self.lspace_allocations[allocated_lspace.room_name].append(employee_number.upper())
                         allocated_lspace.occupants += 1
                         kudosmsg = "congratulations {}, you have been assigned to {} living space"\
@@ -254,25 +254,23 @@ class Amity(object):
             with open(filename) as inputfl:
 
                 content = inputfl.readlines()
-
-                if len(content) == 0:
+                if content:
                     return "The file is empty"
-                else:
-                    for line in content:
-                        person_data = line.split()
-                        first_name = person_data[0]
-                        last_name = person_data[1]
-                        empno = first_name + last_name
-                        job_type = person_data[2]
-                        try:
-                            accomodation = person_data[3]
-                        except Exception:
-                            accomodation = 'N'
+                for line in content:
+                    person_data = line.split()
+                    first_name = person_data[0]
+                    last_name = person_data[1]
+                    empno = first_name + last_name
+                    job_type = person_data[2]
+                    try:
+                        accomodation = person_data[3]
+                    except Exception:
+                        accomodation = 'N'
 
-                        self.add_person(empno.upper(), first_name.upper(), last_name.upper(), job_type.upper(),
-                                        accomodation.upper())
+                    self.add_person(empno.upper(), first_name.upper(), last_name.upper(), job_type.upper(),
+                                    accomodation.upper())
 
-                    return "File data added successfully"
+                return "File data added successfully"
         return "Please provide valid a text file name !"
 
     def print_allocations(self, filename=None):
