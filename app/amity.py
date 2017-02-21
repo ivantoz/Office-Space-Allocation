@@ -102,7 +102,7 @@ class Amity(object):
                 self.staff_list.append(staff)
 
                 allocated_office = self.generate_room("OFFICE")
-                if allocated_office is not None:
+                if allocated_office:
                     self.office_allocations[allocated_office.room_name].append(employee_number.upper())
                     allocated_office.occupants += 1
                     msg1 = "congratulations {}, you have been assigned to {} office"\
