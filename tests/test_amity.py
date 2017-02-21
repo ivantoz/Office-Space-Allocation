@@ -16,8 +16,8 @@ class AmityTestCase(unittest.TestCase):
     def test_error_adding_person_with_duplicate_employee_number(self):
         """Test it does not add person more than once"""
         self.amity.add_person("CN14", "Chris", "Rock", "staff")
-        people_names = [people.employee_number for people in self.amity.all_people]
-        self.assertIn("CN14", people_names)
+        employee_numbers = [people.employee_number for people in self.amity.all_people]
+        self.assertIn("CN14", employee_numbers)
         self.assertEqual(self.amity.add_person("cn14", "Chris", "Rock", "staff"),
                          "sorry, this user already exists.please enter valid employee number")
 
@@ -36,7 +36,7 @@ class AmityTestCase(unittest.TestCase):
         people_list = {"cn01": ["Sam", "wanjala", "Fellow"],
                        "cn02": ["Gideon", "Gitau", "Fellow"],
                        "cn03": ["Charles", "Muthini", "Fellow"],
-                       "cn04": ["Rogers", "Taracha", "Staff"],
+                       "cn04": ["Roger", "Taracha", "Staff"],
                        "cn05": ["Mahad", "Walusimbi", "Fellow"],
                        "cn06": ["Percila", "Njira", "Staff"],
                        "cn07": ["Bryan", "Rotich", "Fellow"]}
@@ -113,7 +113,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("CN01", self.amity.office_allocations["VALHALLA"])
 
     def test_reallocate_person_from_livingspace_to_another(self):
-        """Test amity can reallocate a person from one office to another"""
+        """Test amity can reallocate a person from one livingspace list to another"""
         self.amity.create_room("lspace", ["Shell"])
         self.amity.add_person("CN01", "Brian", "Rotich", "fellow", "Y")
         self.amity.create_room("lspace", ["wing"])
@@ -121,7 +121,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("CN01", self.amity.lspace_allocations["WING"])
 
     def test_reallocate_person_from_unallocated_list(self):
-        """Test amity can reallocate a person from one office to another"""
+        """Test amity can reallocate a person from one unallocated list to office or livingspace"""
         self.amity.add_person("CN01", "Brian", "Rotich", "fellow", "Y")
         self.amity.create_room("office", ["Oculus"])
         self.amity.create_room("lspace", ["Shell"])
