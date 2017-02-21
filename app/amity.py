@@ -124,17 +124,14 @@ class Amity(object):
                 self.fellows_list.append(fellow)
                 allocated_office = self.generate_room("OFFICE")
                 kudosmsg = ''
-                if allocated_office is not None:
+                if allocated_office:
                     self.office_allocations[allocated_office.room_name].append(employee_number.upper())
                     allocated_office.occupants += 1
                     kudosmsg = "congratulations {}, you have been assigned to {} office"\
                         .format(first_name, allocated_office.room_name.upper())
-                    print(kudosmsg)
-
                 else:
                     self.office_unallocated.append(employee_number.upper())
                     kudosmsg = "sorry, all rooms are full at this time."
-                    print(kudosmsg)
 
                 if wants_accomodation.upper() == "Y":
                     allocated_lspace = self.generate_room("LSPACE")
@@ -143,13 +140,11 @@ class Amity(object):
                         allocated_lspace.occupants += 1
                         kudosmsg = "congratulations {}, you have been assigned to {} living space"\
                             .format(first_name, allocated_lspace.room_name)
-                        print(kudosmsg)
 
                     else:
                         person = employee_number.upper()
                         self.lspace_unallocated.append(person)
                         kudosmsg = "sorry, all living space rooms are full at this time."
-                        print(kudosmsg)
                 return kudosmsg
 
     def reallocate_person(self, employee_number, new_room):
@@ -165,11 +160,11 @@ class Amity(object):
         if new_room.upper() not in all_rooms_names:
             return "Room with name {} does not exist".format(new_room.upper())
 
-        rtype = self.check_room_type(new_room.upper())
-        current_room = self.check_allocated_room(employee_number.upper(), rtype.upper())
+        room_type = self.check_room_type(new_room.upper())
+        current_room = self.check_allocated_room(employee_number.upper(), room_type.upper())
         job_type = self.check_employee_job_type(employee_number)
         # import pdb; pdb.set_trace()
-        if rtype.upper() == "LSPACE":
+        if room_type.upper() == "LSPACE":
             # check if trying to reallocate staff to Livingspace
             if job_type.upper() == "STAFF":
                 return "Sorry you cannot allocate staff living space!"
@@ -181,7 +176,7 @@ class Amity(object):
                 new_room_occupant_count = [room.occupants for room in self.all_rooms if room.room_name ==
                                            new_room.upper()]
 
-                if current_room is not None:
+                if current_room:
                     if new_room_occupant_count[0] < 4:
                         self.lspace_allocations[current_room.upper()].remove(employee_number.upper())
                         self.lspace_allocations[new_room.upper()].append(employee_number.upper())
@@ -205,7 +200,7 @@ class Amity(object):
                     else:
                         return "Sorry the LivingSpace is currently fully occupied!"
 
-        if rtype.upper() == "OFFICE":
+        if room_type.upper() == "OFFICE":
             # check whether the person is already in the allocated room
             if employee_number.upper() in self.office_allocations[new_room.upper()]:
                 return "The Person is already allocated in the requested room"
@@ -214,7 +209,7 @@ class Amity(object):
                 new_room_occupant_count = [room.occupants for room in self.all_rooms if
                                            room.room_name == new_room.upper()]
 
-                if current_room is not None:
+                if current_room:
                     if new_room_occupant_count[0] < 6:
                         for room in self.all_rooms:
                             if room.room_name == new_room.upper():
