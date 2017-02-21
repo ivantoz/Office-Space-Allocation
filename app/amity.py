@@ -299,8 +299,8 @@ class Amity(object):
                     file.write('\t' + names)
                     file.write('\n\t' + "_" * 50 + "\n")
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
-            heading = 'AMITY LIVING SPACE ALLOCATIONS'
-            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+            heading2 = 'AMITY LIVING SPACE ALLOCATIONS'
+            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading2.upper() + '\n' + bcolors.ENDC
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
             for lspace, empnos in self.lspace_allocations.items():
                 output += '\n\t' + bcolors.OKGREEN + lspace + bcolors.ENDC + '\n'
@@ -314,7 +314,7 @@ class Amity(object):
 
                 if filename:
                     file = open(filename + ".txt", "a")
-                    file.write("\n")
+                    file.write('\t' + "-" * 50 + '\n\t\t\t\t\t' + heading2.upper() + '\n\t' + "-" * 50 + "\n")
                     file.write('\t' + lspace + "\n")
                     file.write('\t' + lspace_names)
                     file.write('\n\t' + "_" * 50 + "\n")
