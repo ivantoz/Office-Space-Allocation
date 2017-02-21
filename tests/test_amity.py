@@ -138,23 +138,33 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(self.amity.reallocate_person("CN01", "Valhalla"), "CN01 has been moved to VALHALLA",
                          "should return success message")
 
-    def test_person_is_removed_from_old_room(self):
-        """Test that a reallocated person is removed from old room"""
+    def test_reallocate_person_is_removed_from_unallocated_list(self):
+        """Test that a reallocated person is removed from unallocated list"""
         self.amity.add_person("CN02", "John", "Doe", "fellow", "Y")
         self.assertIn("CN02", self.amity.office_unallocated)
         self.assertIn("CN02", self.amity.lspace_unallocated)
         self.amity.create_room("office", ["Oculus"])
         self.amity.create_room("lspace", ["shell"])
-        self.amity.add_person("CN01", "Gideon", "Gitau", "staff")
-        self.assertIn("CN01", self.amity.office_allocations["OCULUS"])
         self.amity.reallocate_person("CN02", "Oculus")
         self.amity.reallocate_person("CN02", "shell")
         self.assertNotIn("CN02", self.amity.office_unallocated)
         self.assertNotIn("CN02", self.amity.lspace_unallocated)
+
+    def test_reallocate_person_is_removed_from_old_room(self):
+        """Test reallocate person removes person from old room"""
+        self.amity.create_room("office", ["Oculus"])
+        self.amity.create_room("lspace", ["shell"])
+        self.amity.add_person("CN01", "Gideon", "Gitau", "fellow", "Y")
+        self.assertIn("CN01", self.amity.office_allocations["OCULUS"])
+        self.assertIn("CN01", self.amity.lspace_allocations["SHELL"])
         self.amity.create_room("office", ["Valhalla"])
+        self.amity.create_room("lspace", ["Wing"])
         self.amity.reallocate_person("CN01", "Valhalla")
+        self.amity.reallocate_person("CN01", "Wing")
         self.assertNotIn("CN01", self.amity.office_allocations["OCULUS"])
+        self.assertNotIn("CN01", self.amity.lspace_allocations["SHELL"])
         self.assertIn("CN01", self.amity.office_allocations["VALHALLA"])
+        self.assertIn("CN01", self.amity.lspace_allocations["WING"])
 
     def test_reallocate_person_to_fully_occupied_office_room(self):
         """Test reallocating person to fully maximum number of occupants"""
