@@ -1,7 +1,7 @@
 from collections import defaultdict
 import random
 import os
-from app.model import Person, Staff, Fellow, Room, Office, LivingSpace
+from app.model import  Staff, Fellow, Office, LivingSpace
 from app.database import Employees, Rooms, create_db, Base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
@@ -276,7 +276,7 @@ class Amity(object):
         if self.office_allocations or self.lspace_allocations:
             output = ""
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
-            heading = 'AMITY ROOM ALLOCATIONS'
+            heading = 'AMITY OFFICE ALLOCATIONS'
             output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
             if filename:
@@ -298,7 +298,10 @@ class Amity(object):
                     file.write('\t' + office + "\n")
                     file.write('\t' + names)
                     file.write('\n\t' + "_" * 50 + "\n")
-
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            heading = 'AMITY LIVING SPACE ALLOCATIONS'
+            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
             for lspace, empnos in self.lspace_allocations.items():
                 output += '\n\t' + bcolors.OKGREEN + lspace + bcolors.ENDC + '\n'
                 lspace_names = ''
