@@ -276,9 +276,7 @@ class Amity(object):
                                         accomodation.upper())
 
                     return "File data added successfully"
-
-        else:
-            return "Please provide valid a text file name !"
+        return "Please provide valid a text file name !"
 
     def print_allocations(self, filename=None):
         """Prints a list of allocations onto the screen. Specifying the optional -o option here outputs the registered
