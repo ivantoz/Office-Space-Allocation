@@ -281,7 +281,6 @@ class AmityTestCase(unittest.TestCase):
         path = os.path.realpath("data.txt")
         self.amity.load_people(path)
         self.assertEqual(len(self.amity.fellows_list), 4)
-        # import pdb; pdb.set_trace()
         self.assertEqual(len(self.amity.staff_list), 3)
 
     def test_load_people_from_non_existent_filename(self):
