@@ -283,7 +283,7 @@ class Amity(object):
     def print_allocations(self, filename=None):
         """Prints a list of allocations onto the screen. Specifying the optional -o option here outputs the registered
         allocations to a txt file"""
-        if len(self.office_allocations) or len(self.lspace_allocations) != 0:
+        if self.office_allocations or self.lspace_allocations:
             output = ""
             output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
             heading = 'AMITY ROOM ALLOCATIONS'
