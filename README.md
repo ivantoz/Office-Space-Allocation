@@ -30,6 +30,14 @@ $ python app.py -i
 
 ```
 
+
+**Run Tests**
+```
+
+$ pytest tests/test_amity.py
+
+```
+
 **Commands**
 ```
 
