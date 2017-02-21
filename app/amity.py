@@ -62,12 +62,12 @@ class Amity(object):
         else:
             return "sorry, that room_type does not exist"
 
-    def generate_room(self, r_type):
+    def generate_room(self, room_type):
         """returns a list of all rooms not full"""
         available = []
         for room in self.all_rooms:
 
-            if room.room_type == r_type.upper():
+            if room.room_type == room_type.upper():
                 if room.room_type == "LSPACE":
                     if room.occupants < room.max_occupants:
                         available.append(room)
@@ -76,7 +76,7 @@ class Amity(object):
                     if room.occupants < room.max_occupants:
                         available.append(room)
 
-        if len(available) > 0:
+        if available:
             return random.choice(available)
         return None
 
