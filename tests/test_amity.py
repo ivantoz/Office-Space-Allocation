@@ -175,6 +175,18 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("CN01", self.amity.office_allocations["VALHALLA"])
         self.assertIn("CN01", self.amity.lspace_allocations["WING"])
 
+    def test_reallocate_person_to_current_room(self):
+        """Test reallocate person to the same room"""
+        self.amity.create_room("office", ["Valhalla"])
+        self.amity.create_room("lspace", ["wing"])
+        self.amity.add_person("CN01", "Gideon", "Gitau", "fellow", "Y")
+        self.assertIn("CN01", self.amity.office_allocations["VALHALLA"])
+        self.assertIn("CN01", self.amity.lspace_allocations["WING"])
+        self.assertEqual(self.amity.reallocate_person("CN01", "valhalla"), "The Person is already allocated in the "
+                                                                           "requested room")
+        self.assertEqual(self.amity.reallocate_person("CN01", "wing"), "The Person is already allocated in the "
+                                                                       "requested room")
+
     def test_reallocate_person_to_fully_occupied_office_room(self):
         """Test reallocating person to fully maximum number of occupants"""
         self.amity.add_person("cn07", "Brian", "Rotich", "Fellow")
@@ -203,7 +215,8 @@ class AmityTestCase(unittest.TestCase):
             self.amity.add_person(empno, people_list[empno][0], people_list[empno][1], people_list[empno][2],
                                   people_list[empno][3])
 
-        self.assertEqual(self.amity.reallocate_person("cn05", "Shell"), "Sorry the LivingSpace is currently fully occupied!")
+        self.assertEqual(self.amity.reallocate_person("cn05", "Shell"), "Sorry the LivingSpace is currently "
+                                                                        "fully occupied!")
 
     def test_reallocate_staff_to_living_space(self):
         """test reallocating staff to a living space room"""
@@ -211,13 +224,6 @@ class AmityTestCase(unittest.TestCase):
         self.amity.add_person("cn06", "Roger", "Taracha", "staff")
         self.amity.create_room("lspace", ["shell"])
         self.assertEqual(self.amity.reallocate_person("CN06", "shell"), "Sorry you cannot allocate staff living space!")
-
-    def test_reallocate_person_same_room(self):
-        """Test reallocating person to same room"""
-        self.amity.create_room("office", ["Camelot"])
-        self.amity.add_person("CN01", "Percila", "Njira", "Staff")
-        self.assertEqual(self.amity.reallocate_person("CN01", 'Camelot'), "The Person is already allocated in the "
-                                                                          "requested room")
 
     def test_reallocate_to_non_existent_room(self):
         """Test reallocating person to non-existent room"""
