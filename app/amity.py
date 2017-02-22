@@ -350,7 +350,7 @@ class Amity(object):
                 file.write("-" * 50 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "-" * 50 + "\n")
                 file.write(names)
                 file.write("\n")
-                file.write("-" * 50 + "\n" + " " * 15 + "UNALLOCATED LIVING SPACE\n" + "-" * 50 + "\n")
+                file.write("-" * 50 + "\n" + " " * 15 + " \n" + "-" * 50 + "\n")
                 file.write(lspace_names)
                 file.close()
             return output

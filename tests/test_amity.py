@@ -273,6 +273,21 @@ class AmityTestCase(unittest.TestCase):
         self.assertTrue(os.path.isfile('test_print.txt'))
         os.remove('test_print.txt')
 
+    def test_it_prints_allocations(self):
+        self.amity.create_room('office', ['Valhalla'])
+        self.amity.create_room('lspace', ['Shell'])
+        self.amity.add_person("cn05", "Roger", "Taracha", "Fellow", "Y")
+        self.amity.add_person("cn04", "Mahad", "Walusimbi", "Fellow")
+        self.amity.add_person("cn03", "Charles", "Muthini", "Fellow")
+        self.amity.create_room("office", ["Oculus"])
+        self.amity.create_room("lspace", ["PHP"])
+        self.assertIn("AMITY OFFICE ALLOCATIONS", self.amity.print_allocations())
+        self.assertIn("AMITY LIVING SPACE ALLOCATIONS", self.amity.print_allocations())
+        self.assertIn("VALHALLA", self.amity.print_allocations())
+        self.assertIn("SHELL", self.amity.print_allocations())
+        self.assertNotIn("OCILUS", self.amity.print_allocations())
+        self.assertNotIn("PHP", self.amity.print_allocations())
+
     def test_save_state(self):
         """Test that save state creates database and persist the data to database from memory"""
         self.amity.save_state('test')
@@ -310,6 +325,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(self.amity.load_state('test.db'), "Database with name {} does not exist".format(db_name))
 
     def test_print_all_office_rooms(self):
+        """Test it prints all offices in amity"""
         self.amity.create_room("office", ["Hogwarts", "Oculus", "Valhalla"])
         self.assertIn("AMITY OFFICES", self.amity.print_all_rooms())
         self.assertIn("Hogwarts", self.amity.print_all_rooms())
@@ -317,6 +333,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("Valhalla", self.amity.print_all_rooms())
 
     def test_print_all_livingspace_rooms(self):
+        """Test it prints all living spaces in Amity"""
         self.amity.create_room("lspace", ["Shell", "Wing", "PHP"])
         self.assertIn("AMITY LIVING SPACES", self.amity.print_all_rooms())
         self.assertIn("Shell", self.amity.print_all_rooms())
@@ -324,17 +341,21 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("Php", self.amity.print_all_rooms())
 
     def test_print_all_rooms_with_no_room_created(self):
+        """Test return message when printing all rooms and no room is created yet"""
         self.assertEqual(self.amity.print_all_rooms(), "No rooms created yet")
 
     def test_print_all_rooms_with_no_office_created(self):
+        """Test printing all rooms when no office is created yet"""
         self.amity.create_room("lspace", ["Shell", "Wing", "PHP"])
         self.assertIn("No Office room created yet", self.amity.print_all_rooms())
 
     def test_print_all_rooms_with_no_livingspace_created(self):
+        """Test printing all rooms when no livingspace is created yet"""
         self.amity.create_room("office", ["Hogwarts", "Oculus", "Valhalla"])
         self.assertIn("No Living Space room created yet", self.amity.print_all_rooms())
 
     def test_print_room(self):
+        """Test that printed content contains relevant details"""
         self.amity.create_room("office", ["Valhalla"])
         self.amity.create_room("lspace", ["Shell"])
         self.amity.add_person("cn01", "ken", "Kip", "fellow", "Y")
@@ -344,12 +365,20 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("Ken Kip, ", self.amity.print_room("Shell"))
 
     def test_print_room_for_unallocated_room(self):
+        """Test printing empty room should show relevant message"""
         self.amity.create_room("office", ["Hogwarts"])
         self.amity.create_room("lspace", ["Shell"])
         self.assertIn("HOGWARTS", self.amity.print_room("Hogwarts"))
         self.assertIn("No one is allocated to Hogwarts room", self.amity.print_room("Hogwarts"))
         self.assertIn("SHELL", self.amity.print_room("shell"))
         self.assertIn("No one is allocated to Shell room", self.amity.print_room("Shell"))
+
+    def test_it_prints_unallocated(self):
+        self.amity.add_person("cn01", "John", "Doe", "fellow", "Y")
+        self.assertIn("UNALLOCATED OFFICE", self.amity.print_unallocated())
+        self.assertIn("John", self.amity.print_unallocated())
+        self.assertIn("Doe", self.amity.print_unallocated())
+        self.assertIn("UNALLOCATED LIVING SPACE", self.amity.print_unallocated())
 
 
 if __name__ == '__main__':
