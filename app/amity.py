@@ -373,7 +373,7 @@ class Amity(object):
                     if room.room_type == 'lspace'.upper():
                         if room_name.upper() in self.lspace_allocations:
                             empnos = self.lspace_allocations[room_name.upper()]
-                            if len(empnos):
+                            if empnos:
                                 names = ''
                                 for empno in empnos:
                                     firstname = [person.first_name for person in self.all_people if
@@ -390,7 +390,7 @@ class Amity(object):
                     elif room.room_type == 'office'.upper():
                         if room_name.upper() in self.office_allocations:
                             empnos = self.office_allocations[room_name.upper()]
-                            if len(empnos):
+                            if empnos:
                                 lspace_names = ''
                                 for empno in empnos:
                                     firstname = [person.first_name for person in self.all_people if
