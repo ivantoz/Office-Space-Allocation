@@ -34,7 +34,7 @@ $ python app.py -i
 **Run Tests**
 ```
 
-$ pytest tests/test_amity.py
+$ pytest -v --cov=app --cov-report=xml --cov-report=term-missing
 
 ```
 
