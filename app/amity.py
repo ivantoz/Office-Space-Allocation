@@ -1,7 +1,7 @@
 from collections import defaultdict
 import random
 import os
-from app.model import  Staff, Fellow, Office, LivingSpace
+from app.model import Staff, Fellow, Office, LivingSpace
 from app.database import Employees, Rooms, create_db, Base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import select
@@ -236,7 +236,6 @@ class Amity(object):
         for empnos in self.all_people:
             if empnos.employee_number == empno.upper():
                 return empnos.job_type
-
 
     def load_people(self, filename):
         """Adds people to rooms from a text file"""
