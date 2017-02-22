@@ -75,7 +75,6 @@ class Amity(object):
 
         if available:
             return random.choice(available)
-        return None
 
     def add_person(self, employee_number, first_name, last_name, job_type, wants_accomodation="N"):
         """
@@ -223,7 +222,6 @@ class Amity(object):
         for room in self.all_rooms:
             if name.upper() == room.room_name:
                 return room.room_type
-        return None
 
     def check_allocated_room(self, empno, room_type):
         """Checks the room type which person is currently allocated"""
@@ -235,14 +233,13 @@ class Amity(object):
             for room in self.office_allocations:
                 if empno.upper() in self.office_allocations[room]:
                     return room
-        return None
 
     def check_employee_job_type(self, empno):
         """Check person job type using employee number"""
         for empnos in self.all_people:
             if empnos.employee_number == empno.upper():
                 return empnos.job_type
-            return None
+
 
     def load_people(self, filename):
         """Adds people to rooms from a text file"""
