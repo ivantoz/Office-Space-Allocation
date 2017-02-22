@@ -37,27 +37,24 @@ class Amity(object):
         all_room_names = [room.room_name for room in self.all_rooms]
         msg = ''
         if room_type.upper() in ["LSPACE", "OFFICE"]:
-            if room_name:
                 msg = ''
-                for room_name in room_name:
-
-                    if room_name.upper() in all_room_names:
-                        msg = "sorry, {} room already exists!please choose another name".format(room_name.upper())
+                for name in room_name:
+                    if not name:
+                        notice = 'Invalid room name!'
+                        return notice
+                    if name.upper() in all_room_names:
+                        msg = "sorry, {} room already exists!please choose another name".format(name.upper())
                         return msg
                     else:
                         if room_type.upper() == "LSPACE":
-                            room = LivingSpace(room_name.upper(), room_type.upper())
+                            room = LivingSpace(name.upper(), room_type.upper())
                             self.all_rooms.append(room)
-                            msg = "{} Living Space successfully created".format(room_name.upper())
-                            print(msg)
+                            msg = "{} Living Space successfully created".format(name.upper())
                         elif room_type.upper() == "OFFICE":
-                            room = Office(room_name.upper(), room_type.upper())
+                            room = Office(name.upper(), room_type.upper())
                             self.all_rooms.append(room)
-                            msg = "{} Office successfully created".format(room_name.upper())
-                            print(msg)
+                            msg = "{} Office successfully created".format(name.upper())
                 return msg
-            notice = 'A room should have a name'
-            return notice
         else:
             return "sorry, that room_type does not exist"
 
@@ -363,49 +360,50 @@ class Amity(object):
         """Prints  the names of all the people in room_name on the screen."""
 
         all_rooms_names = [room.room_name for room in self.all_rooms]
-        if room_name.upper() in all_rooms_names:
-            output = ''
-            for room in self.all_rooms:
-                if room_name.upper() == room.room_name:
-                    output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
-                    output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + room_name.upper() + '\n' + bcolors.ENDC
-                    output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
-                    if room.room_type == 'lspace'.upper():
-                        if room_name.upper() in self.lspace_allocations:
-                            empnos = self.lspace_allocations[room_name.upper()]
-                            if empnos:
-                                names = ''
-                                for empno in empnos:
-                                    firstname = [person.first_name for person in self.all_people if
-                                                 person.employee_number.upper() == empno]
-                                    lastname = [person.last_name for person in self.all_people if
-                                                person.employee_number.upper() == empno]
-                                    names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+        if room_name.upper() not in all_rooms_names:
+            return "The room with the name {} does not exist.".format(room_name)
+        for room in self.all_rooms:
+            if room_name.upper() == room.room_name:
+                output = ''
+                output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + room_name.upper() + '\n' + bcolors.ENDC
+                output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                if room.room_type == 'lspace'.upper():
+                    if room_name.upper() not in self.lspace_allocations:
+                        output += '\n\t' + bcolors.WARNING + "No one is allocated to {} room".format(room_name)\
+                                  + bcolors.ENDC + "\n"
+                        return output
+                    empnos = self.lspace_allocations[room_name.upper()]
+                    names = ''
+                    for empno in empnos:
+                        firstname = [person.first_name for person in self.all_people if
+                                     person.employee_number.upper() == empno]
+                        lastname = [person.last_name for person in self.all_people if
+                                    person.employee_number.upper() == empno]
+                        names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                                output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-                                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
-                            else:
-                                output += "No one is allocated to {} room".format(room_name)
+                        output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+                    output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                    return output
 
-                    elif room.room_type == 'office'.upper():
-                        if room_name.upper() in self.office_allocations:
-                            empnos = self.office_allocations[room_name.upper()]
-                            if empnos:
-                                lspace_names = ''
-                                for empno in empnos:
-                                    firstname = [person.first_name for person in self.all_people if
-                                                 person.employee_number.upper() == empno]
-                                    lastname = [person.last_name for person in self.all_people if
-                                                person.employee_number.upper() == empno]
-                                    lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
+                elif room.room_type == 'office'.upper():
+                    if room_name.upper() not in self.office_allocations:
+                        output += '\n\t' + bcolors.WARNING + "No one is allocated to {} room".format(room_name) \
+                                  + bcolors.ENDC + "\n"
+                        return output
+                    empnos = self.office_allocations[room_name.upper()]
+                    lspace_names = ''
+                    for empno in empnos:
+                        firstname = [person.first_name for person in self.all_people if
+                                     person.employee_number.upper() == empno]
+                        lastname = [person.last_name for person in self.all_people if
+                                    person.employee_number.upper() == empno]
+                        lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                                output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-                                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
-                            else:
-                                output += "No one is allocated to {} room".format(room_name)
+                        output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+                    output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                    return output
 
-            return output
-        return "The room with the name {} does not exist.".format(room_name)
 
     def save_state(self, dbname=None):
         """ Persists all the data stored in the app to a SQLite database. Specifying the --db parameter explicitly
