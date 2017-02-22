@@ -76,6 +76,12 @@ class AmityTestCase(unittest.TestCase):
     def test_create_room_with_unknown_room_type(self):
         self.assertEqual(self.amity.create_room("livingspace", ["Shell"]), "sorry, that room_type does not exist")
 
+    def test_create_room_with_empty_room_type(self):
+        self.assertEqual(self.amity.create_room("", ["Shell"]), "sorry, that room_type does not exist")
+
+    def test_create_room_with_empty_room_name(self):
+        self.assertEqual(self.amity.create_room("office", [""]), "Invalid room name!")
+
     def test_office_allocation(self):
         """Test it allocates office space"""
         self.amity.create_room("office", ["Valhalla"])
@@ -341,7 +347,9 @@ class AmityTestCase(unittest.TestCase):
         self.amity.create_room("office", ["Hogwarts"])
         self.amity.create_room("lspace", ["Shell"])
         self.assertIn("HOGWARTS", self.amity.print_room("Hogwarts"))
+        self.assertIn("No one is allocated to Hogwarts room", self.amity.print_room("Hogwarts"))
         self.assertIn("SHELL", self.amity.print_room("shell"))
+        self.assertIn("No one is allocated to Shell room", self.amity.print_room("Shell"))
 
 
 if __name__ == '__main__':
