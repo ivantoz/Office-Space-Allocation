@@ -328,6 +328,13 @@ class AmityTestCase(unittest.TestCase):
         self.assertFalse(os.path.isfile(db_name))
         self.assertEqual(self.amity.load_state('test.db'), "Database with name {} does not exist".format(db_name))
 
+    def test_it_loads_state(self):
+        db_name = 'dbrabbat.db'
+        self.assertEqual(self.amity.load_state(db_name), "loading data from {} done".format(db_name))
+        self.assertEqual(len(self.amity.fellows_list), 5)
+        self.assertEqual(len(self.amity.staff_list), 4)
+        self.assertEqual(len(self.amity.all_rooms), 4)
+
     def test_print_all_office_rooms(self):
         """Test it prints all offices in amity"""
         self.amity.create_room("office", ["Hogwarts", "Oculus", "Valhalla"])
