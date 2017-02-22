@@ -202,6 +202,11 @@ class AmityTestCase(unittest.TestCase):
 
         self.assertEqual(self.amity.reallocate_person("cn07", "Mordor"), "Sorry the Office is currently fully "
                                                                          "occupied!")
+        self.amity.create_room("office", ["Valhalla"])
+        self.amity.add_person("cn08", "John", "Doe", "fellow")
+        self.assertIn('CN08', self.amity.office_allocations["VALHALLA"])
+        self.assertEqual(self.amity.reallocate_person("cn08", "Mordor"), "Sorry the Office is currently fully "
+                                                                         "occupied!")
 
     def test_reallocate_person_to_fully_occupied_livingspace_room(self):
         """Test reallocating person to fully maximum number of occupants"""
@@ -217,6 +222,11 @@ class AmityTestCase(unittest.TestCase):
 
         self.assertEqual(self.amity.reallocate_person("cn05", "Shell"), "Sorry the LivingSpace is currently "
                                                                         "fully occupied!")
+        self.amity.create_room("lspace", ["Wing"])
+        self.amity.add_person("cn06", "John", "Doe", "fellow", "Y")
+        self.assertIn('CN06', self.amity.lspace_allocations["WING"])
+        self.assertEqual(self.amity.reallocate_person("cn06", "Shell"), "Sorry the LivingSpace is currently fully"
+                                                                        " occupied!")
 
     def test_reallocate_staff_to_living_space(self):
         """test reallocating staff to a living space room"""
