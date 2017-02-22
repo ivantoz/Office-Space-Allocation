@@ -303,6 +303,33 @@ class AmityTestCase(unittest.TestCase):
         self.assertFalse(os.path.isfile(db_name))
         self.assertEqual(self.amity.load_state('test.db'), "Database with name {} does not exist".format(db_name))
 
+    def test_print_all_office_rooms(self):
+        self.amity.create_room("office", ["Hogwarts", "Oculus", "Valhalla"])
+        self.assertIn("AMITY OFFICES", self.amity.print_all_rooms())
+        self.assertIn("Hogwarts", self.amity.print_all_rooms())
+        self.assertIn("Oculus", self.amity.print_all_rooms())
+        self.assertIn("Valhalla", self.amity.print_all_rooms())
+
+    def test_print_all_livingspace_rooms(self):
+        self.amity.create_room("lspace", ["Shell", "Wing", "PHP"])
+        self.assertIn("AMITY LIVING SPACES", self.amity.print_all_rooms())
+        self.assertIn("Shell", self.amity.print_all_rooms())
+        self.assertIn("Wing", self.amity.print_all_rooms())
+        self.assertIn("Php", self.amity.print_all_rooms())
+
+    def test_print_all_rooms_with_no_room_created(self):
+        self.assertEqual(self.amity.print_all_rooms(), "No rooms created yet")
+
+    def test_print_all_rooms_with_no_office_created(self):
+        self.amity.create_room("lspace", ["Shell", "Wing", "PHP"])
+        self.assertIn("No Office room created yet", self.amity.print_all_rooms())
+
+    def test_print_all_rooms_with_no_livingspace_created(self):
+        self.amity.create_room("office", ["Hogwarts", "Oculus", "Valhalla"])
+        self.assertIn("No Living Space room created yet", self.amity.print_all_rooms())
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
