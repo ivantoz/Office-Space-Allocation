@@ -330,6 +330,7 @@ class AmityTestCase(unittest.TestCase):
 
     def test_it_loads_state(self):
         db_name = 'dbrabbat.db'
+        self.assertTrue(os.path.isfile(db_name))
         self.assertEqual(self.amity.load_state(db_name), "loading data from {} done".format(db_name))
         self.assertEqual(len(self.amity.fellows_list), 5)
         self.assertEqual(len(self.amity.staff_list), 4)
