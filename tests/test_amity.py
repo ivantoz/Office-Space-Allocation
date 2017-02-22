@@ -74,16 +74,19 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(len(self.amity.all_rooms), room_count_before + 4)
 
     def test_create_room_with_unknown_room_type(self):
+        """Test creating room with unknown room type"""
         self.assertEqual(self.amity.create_room("livingspace", ["Shell"]), "sorry, that room_type does not exist")
 
     def test_create_room_with_empty_room_type(self):
+        """Test creating room with empty room type"""
         self.assertEqual(self.amity.create_room("", ["Shell"]), "sorry, that room_type does not exist")
 
     def test_create_room_with_empty_room_name(self):
+        """Test creating room with empty room name """
         self.assertEqual(self.amity.create_room("office", [""]), "Invalid room name!")
 
     def test_office_allocation(self):
-        """Test it allocates office space"""
+        """Test it allocates office room"""
         self.amity.create_room("office", ["Valhalla"])
         self.amity.add_person("CN07", "Ken", "Langat", "Staff")
         for room in self.amity.office_allocations:
@@ -104,7 +107,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertEqual(room_count_after, (room_count_before + 1))
 
     def test_create_room_return_error_on_duplicate_names(self):
-        """Test creating room with same name should return warning"""
+        """Test creating room with same name should return warning message"""
         name = ["Hogwarts"]
         self.amity.create_room("office", name)
         expected_msg = "sorry, {} room already exists!please choose another name".format(name[0].upper())
@@ -289,7 +292,8 @@ class AmityTestCase(unittest.TestCase):
         self.assertNotIn("OCILUS", self.amity.print_allocations())
         self.assertNotIn("PHP", self.amity.print_allocations())
 
-    def test_print_allocations_with_no_person_registered(self):
+    def test_print_allocations_with_no_person_added(self):
+        """Test printing allocations with no person added to amity"""
         self.assertEqual(self.amity.print_allocations(), "No person allocated room yet!")
 
     def test_save_state(self):
@@ -324,6 +328,7 @@ class AmityTestCase(unittest.TestCase):
         os.remove(filename)
 
     def test_load_state_with_non_existent_database(self):
+        """Test loading from non existent database"""
         db_name = 'test.db'
         self.assertFalse(os.path.isfile(db_name))
         self.assertEqual(self.amity.load_state('test.db'), "Database with name {} does not exist".format(db_name))
@@ -338,6 +343,7 @@ class AmityTestCase(unittest.TestCase):
         os.remove(dbname)
 
     def test_it_loads_state(self):
+        """Test it loads data from database"""
         db_name = 'dbrabbat.db'
         self.assertTrue(os.path.isfile(db_name))
         self.assertEqual(self.amity.load_state(db_name), "loading data from {} done".format(db_name))
@@ -395,6 +401,7 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("No one is allocated to Shell room", self.amity.print_room("Shell"))
 
     def test_it_prints_unallocated(self):
+        """Test it prints unallocated people to screen"""
         self.amity.add_person("cn01", "John", "Doe", "fellow", "Y")
         self.assertIn("UNALLOCATED OFFICE", self.amity.print_unallocated())
         self.assertIn("John", self.amity.print_unallocated())
