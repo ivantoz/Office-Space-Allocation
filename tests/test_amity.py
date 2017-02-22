@@ -328,7 +328,20 @@ class AmityTestCase(unittest.TestCase):
         self.amity.create_room("office", ["Hogwarts", "Oculus", "Valhalla"])
         self.assertIn("No Living Space room created yet", self.amity.print_all_rooms())
 
+    def test_print_room(self):
+        self.amity.create_room("office", ["Valhalla"])
+        self.amity.create_room("lspace", ["Shell"])
+        self.amity.add_person("cn01", "ken", "Kip", "fellow", "Y")
+        self.assertIn("VALHALLA", self.amity.print_room("Valhalla"))
+        self.assertIn("Ken Kip, ", self.amity.print_room("Valhalla"))
+        self.assertIn("SHELL", self.amity.print_room("Shell"))
+        self.assertIn("Ken Kip, ", self.amity.print_room("Shell"))
 
+    def test_print_room_for_unallocated_room(self):
+        self.amity.create_room("office", ["Hogwarts"])
+        self.amity.create_room("lspace", ["Shell"])
+        self.assertIn("HOGWARTS", self.amity.print_room("Hogwarts"))
+        self.assertIn("SHELL", self.amity.print_room("shell"))
 
 
 if __name__ == '__main__':
