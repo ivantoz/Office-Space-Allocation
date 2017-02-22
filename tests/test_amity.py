@@ -248,7 +248,7 @@ class AmityTestCase(unittest.TestCase):
         self.amity.add_person("cn03", "Charles", "Muthini", "Fellow")
         self.amity.add_person("cn02", "Sam", "Wanjala", "Fellow")
         self.amity.add_person("cn01", "Gideon", "Gitau", "Fellow")
-        self.assertEqual(self.amity.print_unallocated(), "All people have been allocated rooms!")
+        self.assertEqual(self.amity.print_unallocated(), "No one in the unallocated list!")
 
     def test_print_room_with_non_existent_room_name(self):
         """Test printing room with non existent room in amity"""
