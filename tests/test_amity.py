@@ -328,6 +328,15 @@ class AmityTestCase(unittest.TestCase):
         self.assertFalse(os.path.isfile(db_name))
         self.assertEqual(self.amity.load_state('test.db'), "Database with name {} does not exist".format(db_name))
 
+    def test_load_state_from_an_empty_database(self):
+        """Test Loading from an empty database"""
+        dbname = "db_empty.db"
+        file = open(dbname, "a")
+        file.write('')
+        self.assertTrue(os.path.isfile(dbname))
+        self.assertEqual(self.amity.load_state(dbname), "There was error loading from database")
+        os.remove(dbname)
+
     def test_it_loads_state(self):
         db_name = 'dbrabbat.db'
         self.assertTrue(os.path.isfile(db_name))
