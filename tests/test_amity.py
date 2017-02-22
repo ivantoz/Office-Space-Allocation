@@ -274,6 +274,7 @@ class AmityTestCase(unittest.TestCase):
         os.remove('test_print.txt')
 
     def test_it_prints_allocations(self):
+        """Test the content of print allocations"""
         self.amity.create_room('office', ['Valhalla'])
         self.amity.create_room('lspace', ['Shell'])
         self.amity.add_person("cn05", "Roger", "Taracha", "Fellow", "Y")
@@ -287,6 +288,9 @@ class AmityTestCase(unittest.TestCase):
         self.assertIn("SHELL", self.amity.print_allocations())
         self.assertNotIn("OCILUS", self.amity.print_allocations())
         self.assertNotIn("PHP", self.amity.print_allocations())
+
+    def test_print_allocations_with_no_person_registered(self):
+        self.assertEqual(self.amity.print_allocations(), "No person allocated room yet!")
 
     def test_save_state(self):
         """Test that save state creates database and persist the data to database from memory"""
