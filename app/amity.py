@@ -268,13 +268,13 @@ class Amity(object):
         allocations to a txt file"""
         if self.office_allocations or self.lspace_allocations:
             output = ""
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
             heading = 'AMITY OFFICE ALLOCATIONS'
-            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            output += '\n\n\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
             if filename:
                 file = open(filename + ".txt", "a")
-                file.write('\t' + "-" * 50 + '\n\t\t\t\t\t' + heading.upper() + '\n\t' + "-" * 50 + "\n")
+                file.write('\t' + "-" * 100 + '\n\t\t\t\t\t' + heading.upper() + '\n\t' + "-" * 70 + "\n")
             for office, empnos in self.office_allocations.items():
                 output += '\n\t' + bcolors.OKGREEN + office + bcolors.ENDC + "\n"
                 names = ''
@@ -283,18 +283,18 @@ class Amity(object):
                     lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
                     names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
                 output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
 
                 if filename:
                     file = open(filename + ".txt", "a")
                     file.write('\n')
                     file.write('\t' + office + "\n")
                     file.write('\t' + names)
-                    file.write('\n\t' + "_" * 50 + "\n")
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                    file.write('\n\t' + "_" * 100 + "\n")
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
             heading2 = 'AMITY LIVING SPACE ALLOCATIONS'
-            output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading2.upper() + '\n' + bcolors.ENDC
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            output += '\n\n\t\t' + bcolors.HEADER + bcolors.BOLD + heading2.upper() + '\n' + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
             for lspace, empnos in self.lspace_allocations.items():
                 output += '\n\t' + bcolors.OKGREEN + lspace + bcolors.ENDC + '\n'
                 lspace_names = ''
@@ -303,14 +303,14 @@ class Amity(object):
                     lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == empno]
                     lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
                 output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
 
                 if filename:
                     file = open(filename + ".txt", "a")
-                    file.write('\t' + "-" * 50 + '\n\t\t\t\t\t' + heading2.upper() + '\n\t' + "-" * 50 + "\n")
+                    file.write('\t' + "-" * 100 + '\n\t\t\t\t\t' + heading2.upper() + '\n\t' + "-" * 100 + "\n")
                     file.write('\t' + lspace + "\n")
                     file.write('\t' + lspace_names)
-                    file.write('\n\t' + "_" * 50 + "\n")
+                    file.write('\n\t' + "_" * 100 + "\n")
 
             return output
         return "No person allocated room yet!"
@@ -321,20 +321,20 @@ class Amity(object):
 
         if self.office_unallocated or self.lspace_unallocated:
             output = ""
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
             heading = 'UNALLOCATED OFFICE'
             output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
             names = ''
             for employee_number in self.office_unallocated :
                 firstname = [person.first_name for person in self.all_people if person.employee_number.upper() == employee_number]
                 lastname = [person.last_name for person in self.all_people if person.employee_number.upper() == employee_number]
                 names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
             output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
             heading2 = 'UNALLOCATED LIVING SPACE'
             output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading2.upper() + '\n' + bcolors.ENDC
-            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
             lspace_names = ''
             for employee_numb in self.lspace_unallocated:
                 fname = [person.first_name for person in self.all_people if
@@ -343,13 +343,13 @@ class Amity(object):
                             person.employee_number.upper() == employee_numb]
                 lspace_names += fname[0].capitalize() + " " + lname[0].capitalize() + ", "
             output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+            output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
             if filename:
                 file = open(filename + ".txt", "a")
-                file.write("-" * 50 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "-" * 50 + "\n")
+                file.write("-" * 100 + "\n" + " " * 15 + "UNALLOCATED OFFICE\n" + "-" * 50 + "\n")
                 file.write(names)
                 file.write("\n")
-                file.write("-" * 50 + "\n" + " " * 15 + " \n" + "-" * 50 + "\n")
+                file.write("-" * 100 + "\n" + " " * 15 + " \n" + "-" * 100 + "\n")
                 file.write(lspace_names)
                 file.close()
             return output
@@ -364,9 +364,9 @@ class Amity(object):
         for room in self.all_rooms:
             if room_name.upper() == room.room_name:
                 output = ''
-                output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+                output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
                 output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + room_name.upper() + '\n' + bcolors.ENDC
-                output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
                 if room.room_type == 'lspace'.upper():
                     if room_name.upper() not in self.lspace_allocations:
                         output += '\n\t' + bcolors.WARNING + "No one is allocated to {} room".format(room_name)\
@@ -381,8 +381,8 @@ class Amity(object):
                                     person.employee_number.upper() == empno]
                         names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                        output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
-                    output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                    output += '\n\t' + bcolors.OKBLUE + names + bcolors.ENDC
+                    output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
                     return output
 
                 elif room.room_type == 'office'.upper():
@@ -399,10 +399,9 @@ class Amity(object):
                                     person.employee_number.upper() == empno]
                         lspace_names += firstname[0].capitalize() + " " + lastname[0].capitalize() + ", "
 
-                        output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
-                    output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n'
+                    output += '\n\t' + bcolors.OKBLUE + lspace_names + bcolors.ENDC
+                    output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n'
                     return output
-
 
     def save_state(self, dbname=None):
         """ Persists all the data stored in the app to a SQLite database. Specifying the --db parameter explicitly
@@ -517,23 +516,22 @@ class Amity(object):
         if not self.all_rooms:
             return "No rooms created yet"
         output = ""
-        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
         heading = 'AMITY OFFICES'
         output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
-        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n\n'
+        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n\n'
         output += "\n"
         all_office_room_names = [room.room_name for room in self.all_rooms if room.room_type == "OFFICE"]
         if all_office_room_names:
             for room in all_office_room_names:
                 output += '\t' + bcolors.OKBLUE + room.capitalize() + "," + bcolors.ENDC
-            output += "\n"
         else:
             output += '\n\t' + bcolors.WARNING + "No Office room created yet" + bcolors.ENDC + "\n"
 
-        output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC
+        output += '\n\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC
         heading = 'AMITY LIVING SPACES'
         output += '\n\n\t\t\t\t\t' + bcolors.HEADER + bcolors.BOLD + heading.upper() + '\n' + bcolors.ENDC
-        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 55 + bcolors.ENDC + '\n\n'
+        output += '\t' + bcolors.HEADER + bcolors.UNDERLINE + ' ' * 100 + bcolors.ENDC + '\n\n'
         all_livingspace_room_names = [room.room_name for room in self.all_rooms if room.room_type == "LSPACE"]
         if all_livingspace_room_names:
             for room in all_livingspace_room_names:
