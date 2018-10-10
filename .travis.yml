@@ -1,0 +1,18 @@
+language: python
+python:
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.5"
+  - "3.6-dev" # 3.6 development branch
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+# command to run tests
+script:
+  - pytest tests/test_amity.py
+  - py.test --cov=app tests/*
+# run coveralls after success
+after_success: coveralls
+cache: pip
